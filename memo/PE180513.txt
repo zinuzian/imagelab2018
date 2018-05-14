@@ -1,0 +1,11 @@
+http://kiise.or.kr/e_journal/2012/3/SA/pdf/01.pdf
+의료영상 분석을 위한 기계학습
+
+region growing
+back propagation - sigmoid 함수, 최대 반복 횟수 지정, 
+k-NN - 유클리디언 거리, 맨하튼 거리, 사전훈련 필요없음, 
+genetic algor - 염색체, binary coding, crossover, mutation 
+Gaussian Mixture Model - 최대우도추정, EM 알고리즘
+개미 군집 최적화
+조건부 엔트로피
+
