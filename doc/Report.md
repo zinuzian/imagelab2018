@@ -38,6 +38,12 @@ Generating tensor can be subdivided into several functions with various roles.
   * Greater than or equal to start and less than end, step by step, makes a **list** of numbers. Default step is 1.
   
 ### 3. Data Types
+Tensors are represented as a list of numbers enclosed in square brackets. 
 
-
+* torch.FloatTensor(size | list)
+  * This method creates tensor that has given size or list. 
   
+We can change Numpy to Tensor, vice versa.
+* x2 = torch.from_numpy(x1) is for **numpu -> tensor**
+* x3 = x2.numpy() is for **numpy <- tensor**
+
