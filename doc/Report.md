@@ -2,7 +2,10 @@
 
 ## Goals
 
-Our project is about recognizing the bone fracture using pytorch. And Before that, to get used to pytorch, we first design **autoencoder** of our own.
+Our project is about recognizing the bone fracture using pytorch. 
+
+### 1. Get used to pytorch
+we first design **autoencoder** of our own.
 
 We must produce meaningful results within 2 weeks. 
 
