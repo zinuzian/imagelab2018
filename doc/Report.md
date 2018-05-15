@@ -92,5 +92,8 @@ You can add, multiply, divide tensors. Subtraction is proceeded by adding negati
 Broadcasting(do the same thing to all elemnets) is supported.
 
 
+* Addition is just as same as matrix addition.
+* Multiplication and Division is performed element by element, not like matrix multiplication.
+* If you want to do matrix multiplication, you should use torch.mm(tensor1, tensor2).
 
   
