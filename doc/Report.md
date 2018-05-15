@@ -76,6 +76,21 @@ Parameter dim means row when it is set to 0, column when it is set to 1.
   * **split()** method can do the same but its result is little bit different. We can think it as quotient and remainder.
   
 * Squeezing
+  * torch.squeeze(tensor) deletes dimesion whose size is **1**.
+  * torch.unsqueeze(tensor, dim) adds dimension to "dim" dimension with size 1.
+ 
+* Initializing
+To use initialiing method, you should import torch.nn.init (e.g. as init)
+  * init.uniform(tensor, a, b) fills tensor with values drawn from uniform distribution from a(lb) to b(ub).
+  * init.normal(tensor, std) fills tensor with values drawn from normal distribution where standard deviation is std.
+  * init.constant(tensor, val) fills tensor with constant(val).
   
+
+### 2. Arithmetic Operation
+You can add, multiply, divide tensors. Subtraction is proceeded by adding negative value or operator **-**.
+
+Broadcasting(do the same thing to all elemnets) is supported.
+
+
 
   
