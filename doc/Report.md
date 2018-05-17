@@ -97,3 +97,36 @@ Broadcasting(do the same thing to all elemnets) is supported.
 * If you want to do matrix multiplication, you should use torch.mm(tensor1, tensor2).
 
   
+### 3. Matrix Operation
+Matrix multiplication is not performed by star operator. To do that, you should use another method.
+    x1 = torch.FloatTensor(3,4)
+    x2 = torch.FloatTensor(4,5)
+    torch.mm(x1,x2)
+
+This torch.mm() method performs matrix multiplication which results 3 X 5 matrix
+
+* Dot
+  * You can do dot product by using torch.dot(x1, x2)
+
+* Transpose
+  * You can transpose tensor by using (tensor obj).t() method
+
+* Eigen Vector
+  * torch.eig(x1, True)
+
+* Eigen Value
+  * torch.eig(x1, False)
+  
+***
+
+### 16th, May
+
+### 1. Gradient Calculation
+What is Gradient?
+  * Gradient is a multi-variable generalization of the derivative. While a **derivative** can be defined on functions of a 
+
+**single** variable, for functions of **several** variables, the gradient takes its place. 
+  * The gradient is a vector-valued function, as opposed to a derivative, which is scalar-valued.
+
+To calculate gradient, you should import **torch.autograd**
+
