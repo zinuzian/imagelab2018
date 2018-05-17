@@ -123,9 +123,7 @@ This torch.mm() method performs matrix multiplication which results 3 X 5 matrix
 
 ### 1. Gradient Calculation
 What is Gradient?
-  * Gradient is a multi-variable generalization of the derivative. While a **derivative** can be defined on functions of a 
-
-**single** variable, for functions of **several** variables, the gradient takes its place. 
+  * Gradient is a multi-variable generalization of the derivative. While a **derivative** can be defined on functions of a **single** variable, for functions of **several** variables, the gradient takes its place. 
   * The gradient is a vector-valued function, as opposed to a derivative, which is scalar-valued.
 
 To calculate gradient, you should import **torch.autograd**
