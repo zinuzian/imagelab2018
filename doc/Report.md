@@ -133,6 +133,7 @@ You can easily auto-compute the gradient of variable.
 What is Gradient?
   * Gradient is a multi-variable generalization of the derivative. While a **derivative** can be defined on functions of a **single** variable, for functions of **several** variables, the gradient takes its place. 
   * The gradient is a vector-valued function, as opposed to a derivative, which is scalar-valued.
+  * Gradient results vector from scalar.
 
 To calculate gradient, you should import **torch.autograd**
 
