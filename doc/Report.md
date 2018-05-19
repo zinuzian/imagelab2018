@@ -120,8 +120,16 @@ This torch.mm() method performs matrix multiplication which results 3 X 5 matrix
 ***
 
 ### 16th, May
+### 1. Tensor? Variable?
+Basically, tensor == variable. Variable is just a wrapper of tensor. Tensors are the actual data.
 
-### 1. Gradient Calculation
+You can easily auto-compute the gradient of variable.
+
+* e.g. You create a variable A, then add 1 to get B. Now there's a link stored between A and B, in the **creator** property.
+
+
+
+### 2. Gradient Calculation
 What is Gradient?
   * Gradient is a multi-variable generalization of the derivative. While a **derivative** can be defined on functions of a **single** variable, for functions of **several** variables, the gradient takes its place. 
   * The gradient is a vector-valued function, as opposed to a derivative, which is scalar-valued.
