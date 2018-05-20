@@ -164,14 +164,51 @@ This code calculates the gradient of x. **backward** method accumulates gradient
 
 ### 17th, May
 ### 1. Linear Regression
-Required Libraries
-* numpy
-```python
+Procedure : Gen data -> model -> optimize -> train -> check param
+
+* Required Libraries
+```python 
     import numpy as np 
+    import torch
+    import torch.nn as nn
+    import torch.optim as optim
+    import torch.nn.init as init
+    from torch.autograd import Variable
 ```
-
-
+* Generate Data
+```python
+    numOfData = 1000
+    noise = init.normal(torch.FloatTensor(numOfData,1),std=0.2)
+    x=init.uniform(torch.Tensor(numOfData,1),-10,10)
+    y=2*x+3 #relation, the actual parameter values(answers; 2 and 3)
+    y_noise = 2*(x+noise)+3 #same relation
+```
+* Model and Optimizer
+```python
+    model = nn.Linear(1,1) # bias is true (default), input size and ouput size of each sample is 1
+    ouput = model(Variable(x)) # ouput 
+    
+    loss_func = nn.L1Loss() # Creates a criterion that measures the mean absolute value of the element-wise difference between input x and target y
+    optimizer = optim.SGD(model.parameters(), lr=0.01) # stochastic gradient descent with learning rate = 0.01
+```
+* Train
+```python
+    loss_array = []
+    lable = Variable(y_noise)
+    num_epoch = 1000 # number of loop
+    for i in range(num_epoch):
+        ouput = model(Variable(x))
+        optimizer.zero_grad()
+        
+        loss = loss_func(ouput,label)
+        loss.backward()
+        optimzer.step()
+        if i%10 == 0: # print loss per 10 loops
+            print(loss)
+        loss_arr.append(loss.data.numpy()[0])
+```
 ***
+
 ### 18th, May
 
 
