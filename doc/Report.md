@@ -123,11 +123,17 @@ This torch.mm() method performs matrix multiplication which results 3 X 5 matrix
 ### 1. Tensor? Variable?
 Basically, tensor == variable. Variable is just a wrapper of tensor. Tensors are the actual data.
 
-You can easily auto-compute the gradient of variable.
+You can easily auto-compute the gradient of **variable**.
 
-* e.g. You create a variable A, then add 1 to get B. Now there's a link stored between A and B, in the **creator** property.
+* Creator property
+  * e.g.) You create a variable A, then add 1 to get B. Now there's a link stored between A and B, in the **creator** property.
 
-
+Variable contains some variables in it. 
+* data : wrapped tensor(actual data)
+* grad : gradient of the variable
+* requires_grad : for fine grained exclusion of subgraphs from gradient computation, increase efficiency. Only if all inputs don’t require gradient, the output also won’t require it. 
+  * Backward computation is never performed in the subgraphs, where all Tensors didn’t require gradients.
+* volatile : makes whole graph not requiring gradient.
 
 ### 2. Gradient Calculation
 What is Gradient?
@@ -135,5 +141,20 @@ What is Gradient?
   * The gradient is a vector-valued function, as opposed to a derivative, which is scalar-valued.
   * Gradient results vector from scalar.
 
-To calculate gradient, you should import **torch.autograd**
+To calculate gradient, you should import **Variable** module from **torch.autograd** 
 
+    from torch.autograd import Variable
+    x=Variable(torch.FloatTensor(3,4),requires_grad=True)
+    y=x**2 + 4*x
+    z=2*y + 3
+    
+    gradient = torch.FloatTensor(3,4)
+    z.backward(gradient)
+    
+    print(x.grad)
+    y.grad, z.grad
+    
+Since y is made of x, and z is made of y, when we need to find the gradient of z, we should differentiate y and x too by **chain rule**.
+
+This code calculates the gradient of x. **backward** method accumulates gradients in the leaves - you might need to zero them before calling it.
+    
