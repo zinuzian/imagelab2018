@@ -76,14 +76,14 @@ Parameter dim means row when it is set to 0, column when it is set to 1.
   * **split()** method can do the same but its result is little bit different. We can think it as quotient and remainder.
   
 * Squeezing
-  * torch.squeeze(tensor) deletes dimesion whose size is **1**.
-  * torch.unsqueeze(tensor, dim) adds dimension to "dim" dimension with size 1.
+  * ` torch.squeeze(tensor) ` deletes dimesion whose size is **1**.
+  * ` torch.unsqueeze(tensor, dim) ` adds dimension to "dim" dimension with size 1.
  
 * Initializing
 To use initialiing method, you should import torch.nn.init (e.g. as init)
-  * init.uniform(tensor, a, b) fills tensor with values drawn from uniform distribution from a(lb) to b(ub).
-  * init.normal(tensor, std) fills tensor with values drawn from normal distribution where standard deviation is std.
-  * init.constant(tensor, val) fills tensor with constant(val).
+  * ` init.uniform(tensor, a, b) ` fills tensor with values drawn from uniform distribution from a(lb) to b(ub).
+  * ` init.normal(tensor, std) ` fills tensor with values drawn from normal distribution where standard deviation is std.
+  * ` init.constant(tensor, val) ` fills tensor with constant(val).
   
 
 ### 2. Arithmetic Operation
@@ -106,16 +106,16 @@ Matrix multiplication is not performed by star operator. To do that, you should 
 This torch.mm() method performs matrix multiplication which results 3 X 5 matrix
 
 * Dot
-  * You can do dot product by using torch.dot(x1, x2)
+  * You can do dot product by using ` torch.dot(x1, x2) `
 
 * Transpose
-  * You can transpose tensor by using (tensor obj).t() method
+  * You can transpose tensor by using ` (tensor obj).t() ` method
 
 * Eigen Vector
-  * torch.eig(x1, True)
+  *  ` torch.eig(x1, True) `
 
 * Eigen Value
-  * torch.eig(x1, False)
+  * ` torch.eig(x1, False) `
   
 ***
 
@@ -143,6 +143,8 @@ What is Gradient?
 
 To calculate gradient, you should import **Variable** module from **torch.autograd** 
 
+```python
+    import torch
     from torch.autograd import Variable
     x=Variable(torch.FloatTensor(3,4),requires_grad=True)
     y=x**2 + 4*x
@@ -153,8 +155,24 @@ To calculate gradient, you should import **Variable** module from **torch.autogr
     
     print(x.grad)
     y.grad, z.grad
-    
+```
 Since y is made of x, and z is made of y, when we need to find the gradient of z, we should differentiate y and x too by **chain rule**.
 
 This code calculates the gradient of x. **backward** method accumulates gradients in the leaves - you might need to zero them before calling it.
     
+***
+
+### 17th, May
+### 1. Linear Regression
+Required Libraries
+* numpy
+```python
+    import numpy as np 
+```
+
+
+***
+### 18th, May
+
+
+***
