@@ -210,6 +210,11 @@ Procedure : Gen data -> model -> optimize -> train -> check param
 ***
 
 ### 18th, May
+### 1. Visdom
+Visdom broadcasts visualizations of plots, images, and text for yourself and your collaborators.
+
+`pip install visdom` to setup visdom, `python -m visdom.sever` to start server
+
 
 
 ***
