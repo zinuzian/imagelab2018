@@ -214,7 +214,7 @@ Procedure : Gen data -> model -> optimize -> train -> check param
 Visdom broadcasts visualizations of plots, images, and text for yourself and your collaborators.
 
 `pip install visdom` to setup visdom, `python -m visdom.sever` to start server
-
+![ex_screenshot](./img/vizTest.png)
 
 
 ***
