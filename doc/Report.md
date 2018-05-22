@@ -334,9 +334,9 @@ Visdom broadcasts visualizations of plots, images, and text for yourself and you
 
 ### 21st, May
 ### 1. CNN
-* What is CNN?
-  * CNN is abbreviation of Convolutional-Neural-Network. 
-  * Convolution : Combine two data into one datum.
+* What is CNN ? 
+  * CNN is abbreviation of Convolutional-Neural-Network. 
+  * Convolution : Combine two data into one datum.
   * Neural Network : Such systems "learn" (i.e. progressively improve performance on) tasks by considering examples, generally without task-specific programming.
   * Input image and Convolution kernel makes Featured image. 
   * The point is that CNN makes this convolution kernel itself. Kernel does not have fixed values. Rather, its values are modified by conv net.
