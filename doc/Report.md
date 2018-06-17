@@ -469,14 +469,14 @@ Visdom broadcasts visualizations of plots, images, and text for yourself and you
 
 CNN is made up of several layers. There are three layers in addition to the layers for classification: convolutional layer, relu layer, and pooling layer.
 
-**First**, the convolutional layer is the part that scans the image, simply repeating multiplication and addition. The kernel used at this time is called the convolution kernel. Multiply the value of the corresponding kernel element for each pixel, and add all of them to the value of the target pixel. This will result in a d * d matrix for the d * d input.
+**First**, the convolutional layer is the part that scans the image, simply repeating multiplication and addition. The kernel used at this time is called the convolution kernel. Multiply the value of the corresponding kernel element for each pixel, and add all of them to the value of the target pixel. This will result in a `d * d` matrix for the `d * d` input.
 ![ex_screenshot](./img/conv.PNG)
 
-**Second**, the ReLU layer proceeds according to the following definition. ReLU (x) = max (0, x) That is, keeps its value for positive numbers and makes negative numbers zero.
+**Second**, the ReLU layer proceeds according to the following definition. `ReLU (x) = max (0, x)` That is, keeps its value for positive numbers and makes negative numbers zero.
 
-**Third**, the pooling layer summarizes the d * d input as k * k. Where d> k. As a representative pooling method, max pooling is used to summarize the largest value of the input data.
+**Third**, the pooling layer summarizes the `d * d` input as `k * k`. Where `d > k`. As a representative pooling method, max pooling is used to summarize the largest value of the input data.
 
-After passing through these three layers, the input image can be said to pass through one filter. Pixel values ​​were modified by the kernel and reduced in size from **d * d** to **k * k**. This is called **convolve**.
+After passing through these three layers, the input image can be said to pass through one filter. Pixel values ​​were modified by the kernel and reduced in size from `d * d` to `k * k`. This is called **convolve**.
 ![ex_screenshot](./img/cnn.PNG)
 
 Now, if there are N of these filters, scan N times, relu application N times, and pooling N times, resulting in N results. But this is only half of CNN's role. CNN's ultimate goal is to extract the right features from the image. Therefore, in order **to extract the feature**, the **classification of the input image should proceed first**.
