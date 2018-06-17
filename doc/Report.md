@@ -531,3 +531,23 @@ This can be used when the relationship between input and output can not be clear
 For example, the AlphaGo is famous for its confrontation with Lee Sedol in Korea. 
 
 These features can be useful for real-life problems, which are suitable for autonomous driving or strategic simulation problems.
+
+***
+### 24th, May
+### 1. Softmax Classification
+#### Multinomial classification
+
+
+The multinomial classification is a classification that classifies the most probable class in several labels. There is nothing special about multinomial, but it's all about doing binary classification many times like an if statement in programming and calculating the probability that belongs to each class accordingly.
+
+In the ordinary expression `Wx + b`, W was `1 * N`. For multiple binary classifications, you can write W in `K * N`.
+Where N is the number of elements in the input vector and K is the number of classes to classify. For example, if W is 3 * 3, then three classes are distinguished and the input vector will be given as 3 * 1.
+
+
+The result of Wx + b is hatched to y. This value is the predicted value, not the probability value yet. Adjust this value between 0 and 1 using the sigmoid function. After that, one-hot encoding is done through the arg max function to clearly indicate which one to select.
+
+The cost function is obtained by using the probability value obtained in the previous step and the one-hot encoding value. The log function is used and the `-log(S(Yi))` value of the probability value of the class selected by one-hot encoding is used as cost.
+
+Finally, the gradient decent method is used to find the minimum value and the learning proceeds. This part is too complicated, so it only understands the function call.
+
+***
