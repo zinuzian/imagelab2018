@@ -490,19 +490,20 @@ Let's say we have a photo of the dog, a label of Dog, a picture of the cat, and 
 ***
 
 ### 23rd, May
-### Machine Learning Algorithms
-#### 1. How Machine Learns?
+### 1. Machine Learning Algorithms
+#### How Machine Learns?
 
 
 The learning algorithm of machine learning is largely divided into supervised learning and unsupervised learning.
 
 It can be divided into Deep or Shallow according to the number of layers. Ranzato classifies a number of learning algorithms as follows.
+
 ![ex_screenshot](./img/ml_algos.PNG)
 Learning algorithms generally include 'reinforcement learning' in addition to the two 'supervised learning' and 'unsupervised learning'.
 
 
 
-#### 2. Supervised Learning
+### 2. Supervised Learning
 
 Supervised learning is a way of learning that knowing the answer of given input. It is a method to make a model based on the data with the learning data and the correct label for it and to estimate the data of the new verification set.
 
@@ -511,7 +512,7 @@ To get the right learning outcomes, lots of learning data that has good quality 
 Typically, pattern recognition belongs to supervised learning.
 
 
-#### 3. Unsupervised Learning
+### 3. Unsupervised Learning
 
 
 Unsupervised learning is a learning method in which a student finds patterns or features in data through algorithms.
@@ -521,7 +522,7 @@ Although it can be thought that it is convenient to learn by itself if we put on
 Typically, data mining belongs to unsupervised learning.
 
 
-#### 4. Reinforcement Learning
+### 4. Reinforcement Learning
 
 Reinforcement learning is an algorithm that rewards and punishes as if training a pet. 
 
