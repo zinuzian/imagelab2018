@@ -558,7 +558,7 @@ Finally, the gradient decent method is used to find the minimum value and the le
 ### 1. AutoEncoder
 #### What is AutoEncoder?
 
-![ex_screenshot](./img/ae_01.PNG)
+![ex_screenshot](./img/ae01.PNG)
 
 The structure is similar to that of MLP, but their purpose is quite different.
 MLP aims to classify the input vector into one of the given classes, but AE aims to approximate the output to the input.
