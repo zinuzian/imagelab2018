@@ -499,6 +499,7 @@ The learning algorithm of machine learning is largely divided into supervised le
 It can be divided into Deep or Shallow according to the number of layers. Ranzato classifies a number of learning algorithms as follows.
 
 ![ex_screenshot](./img/ml_algos.PNG)
+
 Learning algorithms generally include 'reinforcement learning' in addition to the two 'supervised learning' and 'unsupervised learning'.
 
 
@@ -551,3 +552,21 @@ The cost function is obtained by using the probability value obtained in the pre
 Finally, the gradient decent method is used to find the minimum value and the learning proceeds. This part is too complicated, so it only understands the function call.
 
 ***
+
+
+### 25th, May
+### 1. AutoEncoder
+#### What is AutoEncoder?
+
+![ex_screenshot](./img/ae_01.PNG)
+
+The structure is similar to that of MLP, but their purpose is quite different.
+MLP aims to classify the input vector into one of the given classes, but AE aims to approximate the output to the input.
+
+AE is a kind of compression because the number of neurons in the hidden layer is generally smaller than that of the input layer. Also, since the output layer must be equal in number to the input layer and the number of neurons, decoding is performed from the hidden layer to the output layer.
+
+When using AE to extract information from an input vector, if the number of neurons in the hidden layer is larger than the number of neurons in the input layer, the weight of AE is simply calculated immediately. If we make the weight of the remaining neurons zero, it is over. Therefore, the number of neurons in the hidden layer must be smaller than the number of neurons in the input layer. Putting a number of constraints on it gives you an excellent ability to reduce dimensions.
+
+![ex_screenshot](./img/ae.PNG)
+
+Hidden layers can be multiple layers like MLP. Therefore, AE usually has an hourglass shaped graph. As the bottleneck reaches the hidden layer, AE can express the features from the front more compactly.
