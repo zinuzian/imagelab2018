@@ -606,7 +606,7 @@ In this way, only very simple problems can be solved. classification is rarely d
 
 Non-linear functions include the sigmoid function and the tanh function. The s-shaped function represents a value between 0 and 1 or -1 and 1.
 
-#### Simoid
+#### Sigmoid
 
 Sigmoid function is also called as logistic function. The equation is like this:
 
@@ -620,14 +620,57 @@ But this function has a disadvantage that is fatal to Deep-Neural-Network. The g
 
 ![ex_screenshot](./img/derivativeSigmoid.PNG)
 
-As you can see, when input value is bigger than 5 or less than -5, the result become very close to 0.
+As you can see, when input value is greater than 5 or less than -5, the result become very close to 0. And also, gradient of this function is always greater than 0.
+
+#### Hyperbolic tangent
+
+As mentioned above, the gradient of sigmoid function is positive for all integers. This slows down the speed of learning or makes it impossible to learn. 
+
+![ex_screenshot](./img/weightedSum.PNG)
+
+In process of back propagation, if we differentitate Loss for every w_i, all gradients are positive or all negative since every input is postive because of sigmoid function.
+
+This phenomenon is lead to a problem shown below, which is slowing down the learning speed.
+
+![ex_screenshot](./img/zigzag.PNG)
+
+If we say blue arrow is an optimal way, network only can reach optimal point by zigzag way(red arrows).
+
+Therefore, we decided to use a new activation function that is hyperbolic tangent. The equation is like this:
+
+% <![CDATA[
+\begin{align*}
+tanh(x)&=2\sigma (2x)-1\\ &=\frac { { e }^{ x }-{ e }^{ -x } }{ { e }^{ x }+{ e }^{ -x } } 
+\\tanh'\left( x \right) &=1-tanh^{ 2 }\left( x \right) 
+\end{align*} %]]>
+
+The function has same shape of sigmoid, but it is scaled and shifted. We can see that function is symmetric with respect to zero, unlike the sigmoid function. 
+
+![ex_screenshot](./img/ht.PNG)
+
+But this function has same problem that sigmoid has; The Gradient Vanishing Problem.
+
+![ex_screenshot](./img/diffHT.PNG)
 
 #### Gradient Vanishing/Exploding Problem
 
-As the neural network becomes deeper and deeper, it faces the **Gradient Vanishing / Exploding Problem**. It is a phenomenon that, in the process of optimizing through the derivative using the SGD(Stochatstic Gradient Descent) method, when the input value is out of a certain range, the slope becomes close to 0, and as it passes through the hidden layers, it gradually converges to zero, that makes network can't learn as result can't affect parameters.
+As the neural network becomes deeper and deeper, it faces the **Gradient Vanishing / Exploding Problem**. It is a phenomenon that, in the process of optimizing through the derivative using the SGD(Stochatstic Gradient Descent) method, when the input value is out of a certain range, the slope becomes close to 0, and as it passes through the hidden layers, it gradually converges to zero, that makes network can't learn as result can't affect parameters. This led a deep, cold winter of Neural Network for 20 years(1986~2006).
+
+![ex_screenshot](./img/GVP.PNG)
 
 So we use the function which is called ReLU or function called Maxout to solve this problem.
 The use of ReLU solves the problem, but at the same time it is easier to differentiate and reduce computational complexity. Compared to sigmoid, ReLU converges about 6 times faster.
+
+#### ReLU(Rectified Linear Unit)
+
+Rectified Linear Unit is first invented by Geoffrey Hinton in 2006. He pointed that we used wrong type of non-linearity and suggested ReLU as solution. It's equation is like this:
+
+f(x)=max(0,x)
+
+![ex_screenshot](./img/relu.PNG)
+
+This simple function solved gradient vanishing problem by making it's gradient as 1 for all positive x. It is easier than sigmoid or hyperbolic tangent to differentiate. This made NNs learn faster than before. 
+
 
 #### Parameter Initialization
 
@@ -635,3 +678,5 @@ What happens if we initialize all the weights of the network to zero? Whatever t
 If all nodes have the same value when back propagation, the weights are all updated equally. That is, even if the number of neurons is increased for hidden layers, the expression power of the network is limited.
 
 Therefore, an initialization methodology emerges.
+
+
