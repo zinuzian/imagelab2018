@@ -612,13 +612,13 @@ Sigmoid function is also called as logistic function. The equation is like this:
 
 \sigma (x)=\frac { 1 }{ 1+{ e }^{ -x } } \\ \sigma '\left( x \right) =\sigma (x)(1-\sigma (x))
 
-![ex_screenshot](./img/simoid.PNG)
+![ex_screenshot](./img/simoid.png)
 
 We usually set threshold as 0.5, which means the neuron will be activated when `x > 0`.
 
 But this function has a disadvantage that is fatal to Deep-Neural-Network. The graph that differentiates sigmoid function is as follows.
 
-![ex_screenshot](./img/derivativeSimoid.PNG)
+![ex_screenshot](./img/derivativeSimoid.png)
 
 As you can see, when input value is bigger than 5 or less than -5, the result become very close to 0.
 
