@@ -570,3 +570,68 @@ When using AE to extract information from an input vector, if the number of neur
 ![ex_screenshot](./img/ae.PNG)
 
 Hidden layers can be multiple layers like MLP. Therefore, AE usually has an hourglass shaped graph. As the bottleneck reaches the hidden layer, AE can express the features from the front more compactly.
+
+***
+
+
+### 28th, May
+### 1. Basics of Deep-learning
+#### 5-steps of learning
+
+* Choose Proper Network
+
+* Check Gradient 
+
+* Parameter Initialization
+
+* Parameter Optimization
+
+* Prevent Overfitting
+
+
+
+#### Choose Proper Network - non-linearity
+
+To choose network, we should know the structures of each networks and method about acquiring non-linearity. 
+
+Structures of networks will be handled in July.
+
+Before that, we should know how to acquire non-linearity.
+
+#### What is Non-linearity?
+
+By using a linear function as an activation function, when the layer is stacked, the network can be expressed again as a single equation. This is no different from working without a hidden layer.
+
+In this way, only very simple problems can be solved. classification is rarely divisible by a straight line. Therefore, performance is very bad when using linear functions. It is therefore essential to use non-linear functions.
+
+Non-linear functions include the sigmoid function and the tanh function. The s-shaped function represents a value between 0 and 1 or -1 and 1.
+
+#### Simoid
+
+Sigmoid function is also called as logistic function. The equation is like this:
+
+\sigma (x)=\frac { 1 }{ 1+{ e }^{ -x } } \\ \sigma '\left( x \right) =\sigma (x)(1-\sigma (x))
+
+![ex_screenshot](./img/simoid.PNG)
+
+We usually set threshold as 0.5, which means the neuron will be activated when `x > 0`.
+
+But this function has a disadvantage that is fatal to Deep-Neural-Network. The graph that differentiates sigmoid function is as follows.
+
+![ex_screenshot](./img/derivativeSimoid.PNG)
+
+As you can see, when input value is bigger than 5 or less than -5, the result become very close to 0.
+
+#### Gradient Vanishing/Exploding Problem
+
+As the neural network becomes deeper and deeper, it faces the **Gradient Vanishing / Exploding Problem**. It is a phenomenon that, in the process of optimizing through the derivative using the SGD(Stochatstic Gradient Descent) method, when the input value is out of a certain range, the slope becomes close to 0, and as it passes through the hidden layers, it gradually converges to zero, that makes network can't learn as result can't affect parameters.
+
+So we use the function which is called ReLU or function called Maxout to solve this problem.
+The use of ReLU solves the problem, but at the same time it is easier to differentiate and reduce computational complexity. Compared to sigmoid, ReLU converges about 6 times faster.
+
+#### Parameter Initialization
+
+What happens if we initialize all the weights of the network to zero? Whatever the input is, if the weight is zero, then the same value is passed to the next layer as `k * 0 = 0` for all k.
+If all nodes have the same value when back propagation, the weights are all updated equally. That is, even if the number of neurons is increased for hidden layers, the expression power of the network is limited.
+
+Therefore, an initialization methodology emerges.
