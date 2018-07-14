@@ -707,7 +707,7 @@ Weights are forwarded to the next layer for the value of x in the current layer(
 
 Applying this between every layer will properly initialize the weights between all layers. This pre-trained (or fine-tuned) network does not take a long time for learning. Although we benefited from this learning speed, the RBM is difficult to implement because of its complicated structure. A paper published in 2010 suggests that similar results can be achieved without this complex initialization.
 
-
+### 2. Better Initialization
 #### Xavier/He Initialization (Glorot and Bengio, 2010) (He,Zhang, Ren and Sun, 2015)
 
 The xavier initialization released in 2010 is incredibly simple, but at the same time it shows incredibly good performance. Xavier initialization selects a random number between the input and output values and divides it by the square root of the input value.
@@ -725,7 +725,7 @@ W\sim Uniform({ n }_{ in },{ n }_{ out })\\ Var(W)=\frac { 2 }{ { n }_{ in } }
 
 Here is the code :
 
-```
+```python
 //xavier initialization
 W = np.random.randn(fan_in, fan_out)/np.sqrt(fan_in)
 
