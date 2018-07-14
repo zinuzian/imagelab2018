@@ -900,3 +900,63 @@ for i in range(nb_epochs):
 ```
 
 ***
+
+### 25th, June
+### 1. Overfitting
+#### Prevent Overfitting
+
+Overfitting is when the model becomes too adaptive to the learning data and generalization performance drops. Because machine learning is aimed at general-purpose performance, it must have the ability to judge correctly, even if it is given the new data in addition to the learning data. 
+
+There's some techniques to prevent overarching in neural network learning.
+
+#### Reduce Model Size
+
+This is the simplest way to prevent overfitting. Reduces the number of parameters you need to learn, such as layers and neurons, to avoid overfitting. The more parameters there are, the more tendency to learn the characteristics of given learning data excessively.
+
+#### Early Stopping
+
+Prevent overfitting by stop learning early. Stop learning before NN being conquered by learning data.
+
+#### Decay Weights
+
+It is said that overfitting is often caused by large learning parameters. We use **Weight decay** to prevent this. It is a technique that gives a corresponding large penalty if the value of a learning parameter is large. We mainly use **L2 Regularization**.
+
+#### L2 Regularization
+
+L2 Regularization uses new loss function that is sumation of square of parameters in original loss function. 
+
+The equation is below :
+\\ { L }_{ new }={ L }_{ old }+\frac { \lambda  }{ 2 } { (w }_{ 1 }^{ 2 }+{ w }_{ 2 }^{ 2 }+...+{ w }_{ n }^{ 2 }) %]]>
+
+Where 1/2 is taken into account for differential convenience, and λ is a user-specified hyperparameter that determines the strength of the penalty. This technique has the effect of restricting weights with large values and spreading the weight values as much as possible.
+
+#### Dropout
+
+Dropout is a way of learning by turning off some neurons. At the time of learning, the neurons to be deleted are randomly turned off, and all neurons are used when testing.
+
+***
+
+### 26th, June
+### 1. Learning Rate
+#### Decaying learning rate
+
+The learining rate plays an important role in the learning process as shown in the figure below. If it is too large, it can not be diverted and can not be learned properly. If it is small, learning time becomes too long.
+
+![ex_screenshot](./img/LR.PNG)
+
+While learning can be done with fixed learning rates from the beginning to the end of learning, the more models you learn, the more likely the model will converge to the optimal point, so you might want to fine-tune the parameters by lowering the learning rate at the end.
+
+**η** is the learning rate, **t** is the number of steps, and **k** is a user-specified hyperparameter.
+
+#### Step Decay
+
+This technique reduces the learning rate by a certain amount every step. Each 5epoch is reduced by half or every 20epoch by 1/10, but it is difficult to apply uniformly depending on data or network structure.
+
+#### Exponential Decay
+
+η=η_0e^{-kt}
+
+#### 1/t Decay
+
+η=η_0/(1+kt)
+
