@@ -926,6 +926,7 @@ It is said that overfitting is often caused by large learning parameters. We use
 L2 Regularization uses new loss function that is sumation of square of parameters in original loss function. 
 
 The equation is below :
+
 \\ { L }_{ new }={ L }_{ old }+\frac { \lambda  }{ 2 } { (w }_{ 1 }^{ 2 }+{ w }_{ 2 }^{ 2 }+...+{ w }_{ n }^{ 2 }) %]]>
 
 Where 1/2 is taken into account for differential convenience, and λ is a user-specified hyperparameter that determines the strength of the penalty. This technique has the effect of restricting weights with large values and spreading the weight values as much as possible.
@@ -933,6 +934,8 @@ Where 1/2 is taken into account for differential convenience, and λ is a user-s
 #### Dropout
 
 Dropout is a way of learning by turning off some neurons. At the time of learning, the neurons to be deleted are randomly turned off, and all neurons are used when testing.
+
+![ex_screenshot](./img/dropout.jpeg)
 
 ***
 
