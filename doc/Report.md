@@ -848,3 +848,55 @@ for img, label in img_batch:
 
 print("Accuracy: {}".format(correct / total))
 ```
+
+***
+
+### 31st, May
+### 1. Parameters
+#### Parameter Optimization
+
+The parameter optimization is basically based on the gradient descent method. Most papers are learning neural networks through this method. There are various detailed methods in the descending method. Among them, Batch Gradient Descent, Stochastic Gradient Descent, and Mini-batch Gradient Descent are discussed.
+
+For the gradient parameter **θ**, **dL/dθ** is the gradient of θ against Loss, and **η** is the leaning rate. In other words, the following equation means that **θ** should be updated little by **η** in the **opposite direction** of θ to Loss.
+
+`θ←θ−η∂L/∂θ`
+
+If this function is continued, if the Loss function is convex, the network approaches critical point and the learning ends.
+
+
+### 2. Optimization Methods
+#### Batch Gradient Descent
+
+The gradient of each parameter for the loss of the entire learning data is obtained at once and all parameters are updated once during one epoch. It is very slow and requires a lot of memory. However, in the case of convex, it is guaranteed that the optimal solution can be obtained. If non-convex, converge to local minimum.
+
+```python
+for i in range(nb_epochs):
+    params_grad = evaluate_gradient(loss_function, data, params)
+    params = params - learning_rate * params_grad
+```
+
+#### Stochastic Gradient Descent
+
+The sequence of training data is randomly mixed, and then the loss and gradient are obtained for each individual record. This updates the learning parameters little by little. Updating is performed as many times as the number of learning data for one epoch. It is much faster than BGD and the converge result is consistent with BGD. Of course, learning rate should be reduced.
+
+```python
+for i in range(nb_epochs):
+    np.random.shuffle(data)
+    for example in data:
+    	params_grad = evaluate_gradient(loss_function, example, params)
+    	params = params - learning_rate * params_grad
+```
+
+#### Mini-batch Gradient Descent
+
+This is the same way as SGD, except that it learns batch_size instead of individual records. It is used in many experiments in a stable manner compared to SGD. Because the data is in batches, you can use matrix operations, which leads to the advantage of being able to take advantage of powerful libraries that are available on the market.
+
+```python
+for i in range(nb_epochs):
+    np.random.shuffle(data)
+    for batch in get_batches(data, batch_size=50):
+    	params_grad = evaluate_gradient(loss_function, batch, params)
+    	params = params - learning_rate * params_grad
+```
+
+***
