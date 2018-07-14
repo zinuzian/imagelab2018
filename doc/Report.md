@@ -718,17 +718,17 @@ Applying this between every layer will properly initialize the weights between a
 
 The xavier initialization released in 2010 is incredibly simple, but at the same time it shows incredibly good performance. Xavier initialization selects a random number between the input and output values and divides it by the square root of the input value.
 
-//Xavier Initialization (LeCun Initialization)
+#### Xavier Initialization (LeCun Initialization)
 
 ![ex_screenshot](./img/eq_xavier.PNG)
 
-//Glorot Initialization
+#### Glorot Initialization
 
 ![ex_screenshot](./img/eq_glo.PNG)
 
 He initialization which applied xavier initialization, uses the square root of the input value divided by half to generate a wider range of random numbers than the xavier.
 
-//He Initialization
+#### He Initialization
 
 ![ex_screenshot](./img/eq_he.PNG)
 
