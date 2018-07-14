@@ -713,22 +713,25 @@ Applying this between every layer will properly initialize the weights between a
 The xavier initialization released in 2010 is incredibly simple, but at the same time it shows incredibly good performance. Xavier initialization selects a random number between the input and output values and divides it by the square root of the input value.
 
 //Xavier Initialization (LeCun Initialization)
+
 W\sim Uniform({ n }_{ in },{ n }_{ out })\\ Var(W)=\frac { 1}{ { n }_{ in } }
 
 //Glorot Initialization
+
 W\sim Uniform({ n }_{ in },{ n }_{ out })\\ Var(W)=\frac { 2 }{ { n }_{ in }+{ n }_{ out } }
 
 He initialization which applied xavier initialization, uses the square root of the input value divided by half to generate a wider range of random numbers than the xavier.
 
 //He Initialization
+
 W\sim Uniform({ n }_{ in },{ n }_{ out })\\ Var(W)=\frac { 2 }{ { n }_{ in } }
 
 Here is the code :
 
 ```python
-//xavier initialization
+#xavier initialization
 W = np.random.randn(fan_in, fan_out)/np.sqrt(fan_in)
 
-//He initialization
+#He initialization
 W = np.random.randn(fan_in, fan_out)/np.sqrt(fan_in/2)
 ```
