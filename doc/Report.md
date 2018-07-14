@@ -9,10 +9,15 @@ Our program is about
 * Find my future plan in Image processing
 
 ### 1. Get used to pytorch
-we first design **autoencoder** of our own. We must produce meaningful results within 2 weeks. 
+* We first design **autoencoder** of our own. We must produce meaningful results within 2 weeks. 
 
-My job is to make an encoder part of autoencoder.
+* My job is to make an encoder part of autoencoder.
+
+
 # Daily Report
+
+***
+
 ### 14th, May
 ### 1. To Create Tensor
 To create a random matrix that has "dynamic" dimension, so called **tensor**, we can use rand function, which needs **two parameters**. 
