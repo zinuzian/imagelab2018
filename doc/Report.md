@@ -619,7 +619,7 @@ Non-linear functions include the sigmoid function and the tanh function. The s-s
 
 Sigmoid function is also called as logistic function. The equation is like this:
 
-\sigma (x)=\frac { 1 }{ 1+{ e }^{ -x } } \\ \sigma '\left( x \right) =\sigma (x)(1-\sigma (x))
+![equation](https://latex.codecogs.com/gif.latex?\sigma&space;(x)=\frac&space;{&space;1&space;}{&space;1&plus;{&space;e&space;}^{&space;-x&space;}&space;}&space;\\&space;\sigma&space;'\left(&space;x&space;\right)&space;=\sigma&space;(x)(1-\sigma&space;(x)))
 
 ![ex_screenshot](./img/sigmoid.PNG)
 
