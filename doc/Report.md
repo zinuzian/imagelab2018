@@ -13,10 +13,9 @@ Our program is about
 
 * My job is to make an encoder part of autoencoder.
 
+***
 
 # Daily Report
-
-***
 
 ### 14th, May
 ### 1. To Create Tensor
