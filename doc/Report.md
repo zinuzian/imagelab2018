@@ -606,6 +606,7 @@ In this way, only very simple problems can be solved. classification is rarely d
 
 Non-linear functions include the sigmoid function and the tanh function. The s-shaped function represents a value between 0 and 1 or -1 and 1.
 
+### 2. Non-linearity Functions
 #### Sigmoid
 
 Sigmoid function is also called as logistic function. The equation is like this:
@@ -652,6 +653,7 @@ But this function has same problem that sigmoid has; The Gradient Vanishing Prob
 
 ![ex_screenshot](./img/diffHT.PNG)
 
+### 3. Problems
 #### Gradient Vanishing/Exploding Problem
 
 As the neural network becomes deeper and deeper, it faces the **Gradient Vanishing / Exploding Problem**. It is a phenomenon that, in the process of optimizing through the derivative using the SGD(Stochatstic Gradient Descent) method, when the input value is out of a certain range, the slope becomes close to 0, and as it passes through the hidden layers, it gradually converges to zero, that makes network can't learn as result can't affect parameters. This led a deep, cold winter of Neural Network for 20 years(1986~2006).
@@ -661,6 +663,7 @@ As the neural network becomes deeper and deeper, it faces the **Gradient Vanishi
 So we use the function which is called ReLU or function called Maxout to solve this problem.
 The use of ReLU solves the problem, but at the same time it is easier to differentiate and reduce computational complexity. Compared to sigmoid, ReLU converges about 6 times faster.
 
+### 4. Solution
 #### ReLU(Rectified Linear Unit)
 
 Rectified Linear Unit is first invented by Geoffrey Hinton in 2006. He pointed that we used wrong type of non-linearity and suggested ReLU as solution. It's equation is like this:
@@ -671,7 +674,9 @@ f(x)=max(0,x)
 
 This simple function solved gradient vanishing problem by making it's gradient as 1 for all positive x. It is easier than sigmoid or hyperbolic tangent to differentiate. This made NNs learn faster than before. 
 
+![ex_screenshot](./img/reluIsBetter.PNG)
 
+### 5. Next Step
 #### Parameter Initialization
 
 What happens if we initialize all the weights of the network to zero? Whatever the input is, if the weight is zero, then the same value is passed to the next layer as `k * 0 = 0` for all k.
@@ -679,4 +684,51 @@ If all nodes have the same value when back propagation, the weights are all upda
 
 Therefore, an initialization methodology emerges.
 
+***
 
+### 29th, May
+### 1. Parameters
+#### Parameter Initialization
+
+To set initial values of the weights and bias of each layer are very important. Since the problems we try to solve by neural network are optimization problems in non-convex condition, it may not be possible to find the optimum point if the starting point is mis-caught. (networks stops at local minima)
+
+![ex_screenshot](./img/localminima.PNG)
+
+
+If the initial value of the parameter is set appropriately, it is effective also for gradient adjustment. If we initialize the weight vector W of the input layer to all 0s, the weight is zero at the first forward propagation, so the same value is transmitted to the second layer (bias value). In other words, the neural network can not operate properly because the same value is transmitted to all nodes.
+
+In 2006, Professor Geoffrey Hinton realized that there was a problem with the parameter initialization method at the time of "A Fast Learning Algorithm for Deep Belief Nets" and proposed a new method called Restricted Boltzmann Machine. This paper introduces the concept of "pre-train".
+
+#### Restricted Bolzmann Machine(Hinton et al. 2006)
+
+![ex_screenshot](./img/RBM.PNG)
+
+Weights are forwarded to the next layer for the value of x in the current layer(**forward**). This time, we pass backwards the value to the previous layer and weave it backward(**backward**). By doing this **forward** and **backward** repeatedly, we can find the weight that minimizes the difference between the first input x and the predicted x value x_hat .
+
+Applying this between every layer will properly initialize the weights between all layers. This pre-trained (or fine-tuned) network does not take a long time for learning. Although we benefited from this learning speed, the RBM is difficult to implement because of its complicated structure. A paper published in 2010 suggests that similar results can be achieved without this complex initialization.
+
+
+#### Xavier/He Initialization (Glorot and Bengio, 2010) (He,Zhang, Ren and Sun, 2015)
+
+The xavier initialization released in 2010 is incredibly simple, but at the same time it shows incredibly good performance. Xavier initialization selects a random number between the input and output values and divides it by the square root of the input value.
+
+//Xavier Initialization (LeCun Initialization)
+W\sim Uniform({ n }_{ in },{ n }_{ out })\\ Var(W)=\frac { 1}{ { n }_{ in } }
+
+//Glorot Initialization
+W\sim Uniform({ n }_{ in },{ n }_{ out })\\ Var(W)=\frac { 2 }{ { n }_{ in }+{ n }_{ out } }
+
+He initialization which applied xavier initialization, uses the square root of the input value divided by half to generate a wider range of random numbers than the xavier.
+
+//He Initialization
+W\sim Uniform({ n }_{ in },{ n }_{ out })\\ Var(W)=\frac { 2 }{ { n }_{ in } }
+
+Here is the code :
+
+```
+//xavier initialization
+W = np.random.randn(fan_in, fan_out)/np.sqrt(fan_in)
+
+//He initialization
+W = np.random.randn(fan_in, fan_out)/np.sqrt(fan_in/2)
+```
