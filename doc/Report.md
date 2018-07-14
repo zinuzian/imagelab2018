@@ -2,7 +2,11 @@
 
 ## Goals
 
-Our project is about recognizing the bone fracture using pytorch. 
+Our program is about 
+* Recognizing the bone fracture using pytorch. 
+* Understand basic knowledges of Machine Learning and Neural Network.
+* Make ability to read papers about Deep-Learning in now days.
+* Find my future plan in Image processing
 
 ### 1. Get used to pytorch
 we first design **autoencoder** of our own. We must produce meaningful results within 2 weeks. 
