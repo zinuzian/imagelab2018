@@ -619,13 +619,15 @@ Non-linear functions include the sigmoid function and the tanh function. The s-s
 
 Sigmoid function is also called as logistic function. The equation is like this:
 
-![equation](https://latex.codecogs.com/gif.latex?\sigma&space;(x)=\frac&space;{&space;1&space;}{&space;1&plus;{&space;e&space;}^{&space;-x&space;}&space;}&space;\\&space;\sigma&space;'\left(&space;x&space;\right)&space;=\sigma&space;(x)(1-\sigma&space;(x)))
+![equation](https://latex.codecogs.com/gif.latex?\sigma&space;(x)=\frac&space;{&space;1&space;}{&space;1&plus;{&space;e&space;}^{&space;-x&space;}&space;})
 
 ![ex_screenshot](./img/sigmoid.PNG)
 
 We usually set threshold as 0.5, which means the neuron will be activated when `x > 0`.
 
 But this function has a disadvantage that is fatal to Deep-Neural-Network. The graph that differentiates sigmoid function is as follows.
+
+![equation](https://latex.codecogs.com/gif.latex?\sigma&space;'\left(&space;x&space;\right)&space;=\sigma&space;(x)(1-\sigma&space;(x)))
 
 ![ex_screenshot](./img/derivativeSigmoid.PNG)
 
@@ -647,11 +649,7 @@ If we say blue arrow is an optimal way, network only can reach optimal point by 
 
 Therefore, we decided to use a new activation function that is hyperbolic tangent. The equation is like this:
 
-% <![CDATA[
-\begin{align*}
-tanh(x)&=2\sigma (2x)-1\\ &=\frac { { e }^{ x }-{ e }^{ -x } }{ { e }^{ x }+{ e }^{ -x } } 
-\\tanh'\left( x \right) &=1-tanh^{ 2 }\left( x \right) 
-\end{align*} %]]>
+![ex_screenshot](./img/tanh.PNG)
 
 The function has same shape of sigmoid, but it is scaled and shifted. We can see that function is symmetric with respect to zero, unlike the sigmoid function. 
 
@@ -722,17 +720,17 @@ The xavier initialization released in 2010 is incredibly simple, but at the same
 
 //Xavier Initialization (LeCun Initialization)
 
-W\sim Uniform({ n }_{ in },{ n }_{ out })\\ Var(W)=\frac { 1}{ { n }_{ in } }
+![ex_screenshot](./img/eq_xavier.PNG)
 
 //Glorot Initialization
 
-W\sim Uniform({ n }_{ in },{ n }_{ out })\\ Var(W)=\frac { 2 }{ { n }_{ in }+{ n }_{ out } }
+![ex_screenshot](./img/eq_glo.PNG)
 
 He initialization which applied xavier initialization, uses the square root of the input value divided by half to generate a wider range of random numbers than the xavier.
 
 //He Initialization
 
-W\sim Uniform({ n }_{ in },{ n }_{ out })\\ Var(W)=\frac { 2 }{ { n }_{ in } }
+![ex_screenshot](./img/eq_he.PNG)
 
 Here is the code :
 
@@ -867,7 +865,7 @@ The parameter optimization is basically based on the gradient descent method. Mo
 
 For the gradient parameter **θ**, **dL/dθ** is the gradient of θ against Loss, and **η** is the leaning rate. In other words, the following equation means that **θ** should be updated little by **η** in the **opposite direction** of θ to Loss.
 
-`θ←θ−η∂L/∂θ`
+![ex_screenshot](./img/eq_theta.PNG)
 
 If this function is continued, if the Loss function is convex, the network approaches critical point and the learning ends.
 
@@ -935,7 +933,7 @@ L2 Regularization uses new loss function that is sumation of square of parameter
 
 The equation is below :
 
-\\ { L }_{ new }={ L }_{ old }+\frac { \lambda  }{ 2 } { (w }_{ 1 }^{ 2 }+{ w }_{ 2 }^{ 2 }+...+{ w }_{ n }^{ 2 }) %]]>
+![ex_screenshot](./img/eq_l2.PNG)
 
 Where 1/2 is taken into account for differential convenience, and λ is a user-specified hyperparameter that determines the strength of the penalty. This technique has the effect of restricting weights with large values and spreading the weight values as much as possible.
 
@@ -965,9 +963,9 @@ This technique reduces the learning rate by a certain amount every step. Each 5e
 
 #### Exponential Decay
 
-η=η_0e^{-kt}
+![equation](https://latex.codecogs.com/png.latex?\eta&space;=\eta&space;_{0}e^{-kt})
 
 #### 1/t Decay
 
-η=η_0/(1+kt)
+![equation](https://latex.codecogs.com/png.latex?\eta&space;=\frac{\eta&space;_{0}}{1&plus;kt})
 
