@@ -3,15 +3,30 @@
 ## Goals
 
 Our program is about 
-* Recognizing the bone fracture using pytorch. 
 * Understand basic knowledges of Machine Learning and Neural Network.
 * Make ability to read papers about Deep-Learning in now days.
-* Find my future plan in Image processing
+* Research useful algorithms related to denoising.
 
-### 1. Get used to pytorch
-* We first design **autoencoder** of our own. We must produce meaningful results within 2 weeks. 
+## Research Plan (Checkpoints)
 
-* My job is to make an encoder part of autoencoder.
+### 26/05/18
+* Basic researches about machine learning
+### 09/06/18
+* Basic researches about deep-learning
+### 23/06/18
+* Basic researches about Object Recognition
+### 07/07/18
+* Basic researches about denoising
+* Seminar about contemporary image processing
+### 21/07/18
+* Basic researches about denoising
+* Seminar about contemporary image processing
+### 04/08/18
+* Seminar about contemporary image processing
+* Prototype of denoising program using deep-learning methods
+### 18/08/18
+* Seminar about contemporary image processing
+* Refinement of denoising program
 
 ***
 
@@ -969,3 +984,258 @@ This technique reduces the learning rate by a certain amount every step. Each 5e
 
 ![equation](https://latex.codecogs.com/png.latex?\eta&space;=\frac{\eta&space;_{0}}{1&plus;kt})
 
+
+***
+
+### Paper : Fully Convolutional Networks for Semantic Segmentation (27th~2nd)
+### 27th, June
+### 1. Semantic Segmentation
+Semantic segmentation is a problem that deals with 'What' and 'Where' which are the most important contents of image research. The goal is to find out what is in the given image and where it is. 
+
+Therefore, this problem can be divided into two stages of **classification** and **segmentation**.
+
+#### Classification
+We have seen through previous studies that we can classify images through CNN. CNN, especially for image classification, was able to outperform that conventional neural networks has shown in previous days. CNN, which was able to identify the local characteristics of the image, has received much acclaim. And also, this paper has used CNN for classification problem.
+
+CNN extracts features of the image through a convolution operation and delivers it to the fully connected layer. The fully connected layer returns the values for the N classes that ultimately classify the values of the features by the weights. 
+
+These values are one-hot encoded by methods like softmax and classification is completed.
+
+#### Pixelwise Segmentation
+It is needed to distinguish which pixel belongs to which object in the image to do pixelwise segmentation. Traditional segmentation methods are only interested in finding the pixels that make up an object, so they are not interested in what the object is. Because it ended up looking for a chunk, it was difficult to find out which object was the object to find.
+
+In this paper, segmentation is performed by restoring the dimentional-reduced data through CNN to the same size image as the original image. Among the two methods, shif-and-stitch method and the upsampling method, the latter is choosed.
+
+### 2. Related Works
+#### LeNet
+Yann LeCun and his colleagues were aware of the limitations of the existing fully connected neural network and developed a concept of Convolutional Neural Network as a solution. The input image was size of 1 * 28 * 28 ,which is convolved with four 5 * 5 masks, results 4 * 24 * 24 image. It goes through pooling layer of 2 * 2 pooling which results 4 * 12 * 12 image. It is again convolved with three 5 * 5 filter and results 12 * 8 * 8 nodes. And goes through 2 * 2 average-pooling (12 * 4 * 4), and finally proceeds to convolution operation and 10 * 1 * 1 nodes is returned each of which means classes from 0~9.
+
+![ex_screenshot](./img/lenet1.PNG)
+
+LeNet-5, released later, has a larger input image, a total of three conv layers, two sub-sampling layers, and one fully connected layer. Each convolution is followed by a sub-sampling.
+
+![ex_screenshot](./img/lenet5.PNG)
+
+#### AlexNet
+This network, which won the ILSVRC (ImageNet Large Scale Visual Recognition Challenge) -2012, is a CNN-based neural network developed by the University of Toronto in Canada, and is now known as AlexNet.
+Compared to its competent, AlexNet had a dominant performance and ranked number one, based on CNN technology. Although the structure is almost identical to LeNet, many points have been added for high performance. Especially, it obtained very meaningful results about using GPU for training.
+
+
+
+![ex_screenshot](./img/alexnet.PNG)
+
+AlexNet consists of 5 convolution layers and 3 fully connected layers. The final output has a size of 1 * 1 * 1000 to represent 1000 classes, and the softmax function is used as the activation function for this.
+
+AlexNet has about 650,000 neurons and 630 million connections and uses two GPUs to study this vast network. The filters above is the masks that GPU1 learned and below is that GPU2 learned.
+
+![ex_screenshot](./img/alex_filter.PNG)
+
+To study 227 * 227 * 3 dimension  color images, AlexNet used **stride** of 4 to increase the field of view and reduce the convolution operation. As the network grows, it becomes possible to learn high-level features. In order to improve the learning speed, They used the ReLU function to learn about 6 times faster.
+
+Using the ReLU function as an activation function also has the advantage that we don't have to perform input normalization. However, there is a problem with output that increases in proportion to the input value. Thus, normalizing the results of multiple feature maps will benefit from a generalization viewpoint.
+This results in a lateral inhibition effect in terms of biological point of view.
+
+In addition, overlapped pooling reduces the error rate and reduces the possibility of overfitting. (Using max-pooling unlike LeNet)
+Another approach to overfitting was to use data augmentation and a dropout method that omits the FCL mesh.
+
+![ex_screenshot](./img/dropout.PNG)
+
+#### VGG Net
+It is an interesting network with GoogLeNet in ILSVRC-2014.
+It is a deeply neural network that is often used in subsequent papers since its structure is simple. 
+![ex_screenshot](./img/vgg.PNG)
+
+This neural network is a network that is found while studying the effect of the depth of neural network on performance. It shows that the deeper the network, the more complicated problem can be solved. Also, it shows that the larger filter can be expressed as the overlap of several small filters. 
+
+The analysis is actually on GoogLeNet, and VGGNet is just testing the depth of the network. Thus, the recpeptive field is set to 3 * 3 (most simple) and 16 convolution layers show the best performance. It was also shown that the number of parameters can be reduced in the convolution layer.
+
+But this neural network, as the authors of GoolgLeNet pointed out, has a huge number of 133 million parameters. This leads to a lot of memory requirements. In addition, the deep net can solve the gradient vanishing / exploding problem when it learns it. After learning the relatively simple structure, it is solved by using this result for initial value setting.
+
+
+***
+### Paper : Fully Convolutional Networks for Semantic Segmentation (27th~2nd)
+### 28th, June
+### 1. Deep filter
+#### Classifier
+
+#### Shift and Stitch
+
+
+#### Upsampling
+
+
+
+### 2. Fractionally Strided
+#### Stride
+
+
+
+***
+### Paper : Fully Convolutional Networks for Semantic Segmentation (27th~2nd)
+### 29th, June
+### 1. FCN Traning
+#### 
+
+
+***
+### Paper : Fully Convolutional Networks for Semantic Segmentation (27th~2nd)
+### 2nd, July
+### 1. FCN
+#### Semantic Segmentation
+
+
+***
+### 3rd, July
+### 1. FCN
+#### Semantic Segmentation
+
+
+***
+### 4th, July
+### 1. FCN
+#### Semantic Segmentation
+
+
+***
+
+### 5th, July
+### 1. FCN
+#### Semantic Segmentation
+
+
+***
+
+### 6th, July
+### 1. FCN
+#### Semantic Segmentation
+
+
+***
+
+
+### 9th, July
+### 1. FCN
+#### Semantic Segmentation
+
+
+***
+### 10th, July
+### 1. FCN
+#### Semantic Segmentation
+
+
+***
+### 11th, July
+### 1. FCN
+#### Semantic Segmentation
+
+
+***
+### 12th, July
+### 1. FCN
+#### Semantic Segmentation
+
+
+***
+### 13th, July
+### 1. FCN
+#### Semantic Segmentation
+
+
+***
+
+
+### 16th, July
+### 1. FCN
+#### Semantic Segmentation
+
+
+***
+### 17th, July
+### 1. FCN
+#### Semantic Segmentation
+
+
+***
+### 18th, July
+### 1. FCN
+#### Semantic Segmentation
+
+
+***
+### 19th, July
+### 1. FCN
+#### Semantic Segmentation
+
+
+***
+### 20th, July
+### 1. FCN
+#### Semantic Segmentation
+
+
+***
+
+
+### 23rd, July
+### 1. FCN
+#### Semantic Segmentation
+
+
+***
+### 24th, July
+### 1. FCN
+#### Semantic Segmentation
+
+
+***
+### 25th, July
+### 1. FCN
+#### Semantic Segmentation
+
+
+***
+### 26th, July
+### 1. FCN
+#### Semantic Segmentation
+
+
+***
+### 27th, July
+### 1. FCN
+#### Semantic Segmentation
+
+
+***
+
+
+### 30th, July
+### 1. FCN
+#### Semantic Segmentation
+
+
+***
+### 31st, July
+### 1. FCN
+#### Semantic Segmentation
+
+
+***
+### 1st, August
+### 1. FCN
+#### Semantic Segmentation
+
+
+***
+### 2nd, August
+### 1. FCN
+#### Semantic Segmentation
+
+
+***
+### 3rd, August
+### 1. FCN
+#### Semantic Segmentation
+
+
+***
