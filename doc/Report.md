@@ -2,10 +2,10 @@
 
 ## Goals
 
-Our program is about 
-* Understand basic knowledges of Machine Learning and Neural Network.
-* Make ability to read papers about Deep-Learning in now days.
-* Research useful algorithms related to denoising.
+Our program is 
+* To understand basic knowledges of Machine Learning and Neural Network.
+* To make ability to read papers about Deep-Learning in now days.
+* To research useful algorithms related to denoising.
 
 ## Research Plan (Checkpoints)
 
@@ -1057,17 +1057,43 @@ But this neural network, as the authors of GoolgLeNet pointed out, has a huge nu
 ### 28th, June
 ### 1. Deep filter
 #### Classifier
+Writers solve classificaion problem using a well-proven network (such as AlexNet, VGG Net, GoogLeNet). These are typical Convolutional Neural Networks with a fully connected layer behind the convolution layer. Conventional Convolutional Neural Networks lose spatial information in this process. This is a kind of discarding the information for the segmentation, which is a serious problem in achieving the goal(semantic segmetation).
+
+![ex_screenshot](./img/cnn_structure.PNG)
+
+Also, since this fully connected layer only accepts a fixed size input, we have designed a fully connected layer according to the size of the fixed input during the design of the neural network.
+
+![ex_screenshot](./img/fcn_res1.PNG)
+
+FCN developers, by using fact that they can consider fully connected layer as a 1x1 convolution (applying this concept to classification and detection already in the paper related to 'OverFeat'), were able to conserve spatial information and to response to variable sizes of the input image. Developers of FCN called it 'convolutionize'. This allows images to be processed at once rather than at the patch level, thereby reducing computation and speeding up the computation.
+
+![ex_screenshot](./img/1by1_conv.PNG)
+
 
 #### Shift and Stitch
 
+If the output is downsampled by a factor of f, shift the input x pixels to the right and y pixels down, once for every (x,y) such that 0 <= x, y < f. This takes a lot of computation time.
+
+![ex_screenshot](./img/sas_eq.PNG)
+
+![ex_screenshot](./img/shif_and_stitch.PNG)
+
+However, authors didn't used this technique and decided to use upsampling instead because of its efficency. 
+
+In 2016, Fiisher Yu shown that shift-and-stitch is efficient for dense prediction, contrast to this paper.
 
 #### Upsampling
 
+After several stages of convolution and pooling, the size of the feature map is reduced. To do pixelwise prediction, it requires to restore image in pixel by pixel. In the paper, authors concern about various restoration methods like **shift-and-stich**, but as a result, this paper uses **skip architecture** for dense prediction. 
+![ex_screenshot](./img/skip_arch.PNG)
 
+It is a method to use all 1/16, 1/8 feature map information as well as 1/32 feature map. The previous layer has more information than the current layer which is useful for dense prediction.
 
-### 2. Fractionally Strided
-#### Stride
+![ex_screenshot](./img/skip_arch2.PNG)
 
+If we keep adding skip and intermediate results, we can find out that image becomes more accurate. We usually use FCN-8s which skips from the result of convolution layer 3. 
+
+![ex_screenshot](./img/fcn_res2.PNG)
 
 
 ***
