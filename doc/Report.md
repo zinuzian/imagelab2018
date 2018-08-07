@@ -1074,7 +1074,7 @@ FCN developers, by using fact that they can consider fully connected layer as a 
 
 If the output is downsampled by a factor of f, shift the input x pixels to the right and y pixels down, once for every (x,y) such that 0 <= x, y < f. This takes a lot of computation time.
 
-![ex_screenshot](./img/sas_eq.png)
+![ex_screenshot](./img/sas_eq.PNG)
 
 ![ex_screenshot](./img/shif_and_stitch.png)
 
