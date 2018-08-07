@@ -987,7 +987,7 @@ This technique reduces the learning rate by a certain amount every step. Each 5e
 
 ***
 
-### Paper : Fully Convolutional Networks for Semantic Segmentation (27th~2nd)
+### Paper : Fully Convolutional Networks for Semantic Segmentation (27th ~ 3rd)
 ### 27th, June
 ### 1. Semantic Segmentation
 Semantic segmentation is a problem that deals with 'What' and 'Where' which are the most important contents of image research. The goal is to find out what is in the given image and where it is. 
@@ -1053,7 +1053,7 @@ But this neural network, as the authors of GoolgLeNet pointed out, has a huge nu
 
 
 ***
-### Paper : Fully Convolutional Networks for Semantic Segmentation (27th~2nd)
+### Paper : Fully Convolutional Networks for Semantic Segmentation (27th ~ 3rd)
 ### 28th, June
 ### 1. Deep filter
 #### Classifier
@@ -1097,40 +1097,42 @@ If we keep adding skip and intermediate results, we can find out that image beco
 
 
 ***
-### Paper : Fully Convolutional Networks for Semantic Segmentation (27th~2nd)
+### Paper : Fully Convolutional Networks for Semantic Segmentation (27th ~ 3rd)
 ### 29th, June
 ### 1. FCN Traning
 #### 
 
 
 ***
-### Paper : Fully Convolutional Networks for Semantic Segmentation (27th~2nd)
+### Paper : Fully Convolutional Networks for Semantic Segmentation (27th ~ 3rd)
 ### 2nd, July
 ### 1. FCN
 #### Semantic Segmentation
 
 
 ***
+### Seminar Day : Fully Convolutional Networks for Semantic Segmentation 
 ### 3rd, July
 ### 1. FCN
 #### Semantic Segmentation
 
 
 ***
+### Paper : Dynamic Routing Between Capsules (4th ~ 9th)
 ### 4th, July
 ### 1. FCN
 #### Semantic Segmentation
 
 
 ***
-
+### Paper : Dynamic Routing Between Capsules (4th ~ 9th)
 ### 5th, July
 ### 1. FCN
 #### Semantic Segmentation
 
 
 ***
-
+### Paper : Dynamic Routing Between Capsules (4th ~ 9th)
 ### 6th, July
 ### 1. FCN
 #### Semantic Segmentation
@@ -1138,128 +1140,171 @@ If we keep adding skip and intermediate results, we can find out that image beco
 
 ***
 
-
+### Seminar Day : Capsule Network and Dynamic Routing
 ### 9th, July
 ### 1. FCN
 #### Semantic Segmentation
 
 
 ***
+### Paper : Stochastic Gradient Descent with Hyperbolic-Tangent Decay (arXiv, 2018)
+### Paper : Batch Normalization : Accelerating Deep Network Training by Reducing Internal Covariate Shift (2015)
+### Paper : Don‘t Decay the Learning Rate, Increase the Batch Size (2017) (10th ~ 16th)
 ### 10th, July
 ### 1. FCN
 #### Semantic Segmentation
 
 
 ***
+### Paper : Stochastic Gradient Descent with Hyperbolic-Tangent Decay (arXiv, 2018)
+### Paper : Batch Normalization : Accelerating Deep Network Training by Reducing Internal Covariate Shift (2015)
+### Paper : Don‘t Decay the Learning Rate, Increase the Batch Size (2017) (10th ~ 16th)
 ### 11th, July
 ### 1. FCN
 #### Semantic Segmentation
 
 
 ***
+### Paper : Stochastic Gradient Descent with Hyperbolic-Tangent Decay (arXiv, 2018)
+### Paper : Batch Normalization : Accelerating Deep Network Training by Reducing Internal Covariate Shift (2015)
+### Paper : Don‘t Decay the Learning Rate, Increase the Batch Size (2017) (10th ~ 16th)
 ### 12th, July
 ### 1. FCN
 #### Semantic Segmentation
 
 
 ***
+### Paper : Stochastic Gradient Descent with Hyperbolic-Tangent Decay (arXiv, 2018)
+### Paper : Batch Normalization : Accelerating Deep Network Training by Reducing Internal Covariate Shift (2015)
+### Paper : Don‘t Decay the Learning Rate, Increase the Batch Size (2017) (10th ~ 16th)
 ### 13th, July
 ### 1. FCN
 #### Semantic Segmentation
 
 
 ***
-
-
+### Seminar Day : Decaying LR vs Batch Normalization
 ### 16th, July
 ### 1. FCN
 #### Semantic Segmentation
 
 
 ***
+### Paper : Saliency-Guided Unsupervised Feature Learning for Scene Classification(2015)
 ### 17th, July
 ### 1. FCN
 #### Semantic Segmentation
 
 
 ***
+### Paper : Saliency-Guided Unsupervised Feature Learning for Scene Classification(2015)
 ### 18th, July
 ### 1. FCN
 #### Semantic Segmentation
 
 
 ***
+### Paper : Saliency-Guided Unsupervised Feature Learning for Scene Classification(2015)
 ### 19th, July
 ### 1. FCN
 #### Semantic Segmentation
 
 
 ***
+### Paper : Saliency-Guided Unsupervised Feature Learning for Scene Classification(2015)
 ### 20th, July
 ### 1. FCN
 #### Semantic Segmentation
 
 
 ***
-
-
+### Seminar Day : Saliency-Guided Unsupervised Feature Learning for Scene Classification
 ### 23rd, July
 ### 1. FCN
 #### Semantic Segmentation
 
 
 ***
+### Paper : Object Recognition from Local Scale-Invariant Features(1999)
 ### 24th, July
 ### 1. FCN
 #### Semantic Segmentation
 
 
 ***
+### Paper : Object Recognition from Local Scale-Invariant Features(1999)
 ### 25th, July
 ### 1. FCN
 #### Semantic Segmentation
 
 
 ***
+### Paper : Object Recognition from Local Scale-Invariant Features(1999)
 ### 26th, July
 ### 1. FCN
 #### Semantic Segmentation
 
 
 ***
+### Paper : Object Recognition from Local Scale-Invariant Features(1999)
 ### 27th, July
 ### 1. FCN
 #### Semantic Segmentation
 
 
 ***
-
-
+### Seminar Day : Object Recognition from Local Scale-Invariant Features + Kullback Leibler Divergence
 ### 30th, July
 ### 1. FCN
 #### Semantic Segmentation
 
 
 ***
+### Paper : ImageNet Classification with Deep Convolutional Neural Networks(2012)
 ### 31st, July
 ### 1. FCN
 #### Semantic Segmentation
 
 
 ***
+### Paper : ImageNet Classification with Deep Convolutional Neural Networks(2012)
 ### 1st, August
 ### 1. FCN
 #### Semantic Segmentation
 
 
 ***
+### Paper : ImageNet Classification with Deep Convolutional Neural Networks(2012)
 ### 2nd, August
 ### 1. FCN
 #### Semantic Segmentation
 
 
 ***
+### Paper : ImageNet Classification with Deep Convolutional Neural Networks(2012)
 ### 3rd, August
+### 1. FCN
+#### Semantic Segmentation
+
+
+***
+### Seminar Day : ImageNet Classification with Deep Convolutional Neural Networks
+### 6th, August
+### 1. FCN
+#### Semantic Segmentation
+
+
+***
+### Paper : 
+### 7th, August
+### 1. FCN
+#### Semantic Segmentation
+
+
+***
+
+### Paper : 
+### 8th, August
 ### 1. FCN
 #### Semantic Segmentation
 
