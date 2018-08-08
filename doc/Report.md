@@ -1295,18 +1295,3 @@ If we keep adding skip and intermediate results, we can find out that image beco
 
 
 ***
-### Paper : 
-### 7th, August
-### 1. FCN
-#### Semantic Segmentation
-
-
-***
-
-### Paper : 
-### 8th, August
-### 1. FCN
-#### Semantic Segmentation
-
-
-***
