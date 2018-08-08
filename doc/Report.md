@@ -1153,35 +1153,67 @@ Yann LeCun, also the first generation of deep-running, has argued that max pooli
 Equivariance ensures that CNN understands the rotation or rate change and adapts accordingly so that the spatial location within the image is not lost. The ship is still a small ship, but CNN reduces it to detect it. This leads to the recent development of the Capsule Network.
 
 
-
 ***
 ### Paper : Dynamic Routing Between Capsules (2017)
 ### 5th, July
 ### 1. What is Capsule Network?
-#### Semantic Segmentation
+#### Approach
+
+To understand the capsule network, you first need to understand how computer graphics are represented. Computer graphics stores geometric objects as well as matrices representing the relative positions and orientations of objects in an array in the computer's memory. Then special software transforms the internal representation into an image on the screen, which is called **rendering**.
+
+Professor Hinton claims here that the brain processes information in the opposite order. The visual information received by the eye is disassembled and taken as a hierarchical representation, and then recognized by matching patterns and relationships (also called, background knowledge) stored in the brain. That is, when we recognize an object in the brain, the angle of the object does not affect our cognition.
+
+![ex_screenshot](./img/equivariance.PNG)
+
+This approach solves the problem of CNN. With CNN, it is almost impossible to judge whether an object viewed from various angles is the same object. Since the image is always accessed in two dimensions, it is recognized as a different object if the pose changes. But with CapsNet, you can better judge these issues. The paper argues that there was a 45% performance improvement over the current technology.
+
+Capsule networks have another advantage. That is, you can get effective results with just a little data, while CNN can learn recognition with tens of thousands of examples, while capsule networks can learn hundreds of times. However, the source codes implemented so far are slower than existing neural network codes because they have not been sufficiently studied and are not optimized.
+
+
+#### Capsule
+
+![ex_screenshot](./img/bike.PNG)
+
+When we understand the world, it can be understood as "entity" and "entity's property". If you recall the bike picture described above, the entity is "a person riding a bike" and property is "a bike, a run over the road, a speed, a person in a cycling costume, a texture,
+etc"
+
+CNN has too few structures to represent these entities. CNN's neurons and layers do not represent entities. If you go through dynamic routing, the final capsule can represent:
+* The probability of entity exists
+* Properties of entity (type, scale, position, velocity ...)
+
+### 2. How does it look like?
+#### Architecture of CapsNet
+![ex_screenshot](./img/capsnet.PNG)
+
+The MNIST digit of 28 x 28 x 1 coming in as the input image. Until then, it is the same as the existing CNN structure we know. Create 256 feature maps of 20 x 20 through the kernel with 9 x 9 256 filters. After that, we are in the process of forming PrimaryCaps. The name is PrimaryCaps but we are going through the convolution filter that we knew about. If you go through a convolution filter that creates a 32 x 8 feature map of 9 x 9 on a 20 x 20 256 feature map, you get PrimaryCaps.
+
+![ex_screenshot](./img/capsDecode.PNG)
+Decoder structure to reconstruct a digit from the DigitCaps layer representation. The euclidean distance between the image and the output of the Sigmoid layer is minimized during training. We use the true label as reconstruction target during training.
 
 
 ***
 ### Paper : Dynamic Routing Between Capsules (2017)
 ### 6th, July
-### 1. What is Capsule Network?
-#### Semantic Segmentation
+### 1. Capsule Network Performance
+#### MNIST
 
+![ex_screenshot](./img/capsRes.PNG)
 
-***
+The test error rate on MNIST for different CapsNet setups and shows the importance of routing and reconstruction regularizer. Adding the reconstruction regularizer boosts the routing performance by enforcing the pose encoding in the capsule vector.
+We get a low test error (0.25%) on a 3 layer network previously only achieved by deeper networks. 
 
-### Seminar Day : Capsule Network and Dynamic Routing
-### 9th, July
-### 1. What is Capsule Network?
-#### Semantic Segmentation
+#### What the individual dimensions of a capsule represent
+![ex_screenshot](./img/perbutation.PNG)
+After computing the activity vector for the correct digit capsule, we can feed a perturbed version of this activity vector to the decoder network and see how the perturbation affects the reconstruction.
 
+Each row shows the reconstruction when one of the 16 dimensions in the DigitCaps representation is tweaked by intervals of 0.05 in the range [−0.25, 0.25].
 
 ***
 ### Paper : Stochastic Gradient Descent with Hyperbolic-Tangent Decay (arXiv, 2018)
 ### Paper : Batch Normalization : Accelerating Deep Network Training by Reducing Internal Covariate Shift (2015)
 ### Paper : Don‘t Decay the Learning Rate, Increase the Batch Size (2017)
 ### 10th, July
-### 1. FCN
+### 1. Decaying Learning Rate
 #### Semantic Segmentation
 
 
@@ -1190,7 +1222,7 @@ Equivariance ensures that CNN understands the rotation or rate change and adapts
 ### Paper : Batch Normalization : Accelerating Deep Network Training by Reducing Internal Covariate Shift (2015)
 ### Paper : Don‘t Decay the Learning Rate, Increase the Batch Size (2017)
 ### 11th, July
-### 1. FCN
+### 1. Decaying Learning Rate
 #### Semantic Segmentation
 
 
@@ -1199,7 +1231,7 @@ Equivariance ensures that CNN understands the rotation or rate change and adapts
 ### Paper : Batch Normalization : Accelerating Deep Network Training by Reducing Internal Covariate Shift (2015)
 ### Paper : Don‘t Decay the Learning Rate, Increase the Batch Size (2017)
 ### 12th, July
-### 1. FCN
+### 1. Batch Normalization
 #### Semantic Segmentation
 
 
@@ -1208,102 +1240,143 @@ Equivariance ensures that CNN understands the rotation or rate change and adapts
 ### Paper : Batch Normalization : Accelerating Deep Network Training by Reducing Internal Covariate Shift (2015)
 ### Paper : Don‘t Decay the Learning Rate, Increase the Batch Size (2017)
 ### 13th, July
-### 1. FCN
-#### Semantic Segmentation
-
-
-***
-
-### Paper : Saliency-Guided Unsupervised Feature Learning for Scene Classification(2015)
-### 17th, July
-### 1. FCN
-#### Semantic Segmentation
-
-
-***
-### Paper : Saliency-Guided Unsupervised Feature Learning for Scene Classification(2015)
-### 18th, July
-### 1. FCN
+### 1. Batch Normalization
 #### Semantic Segmentation
 
 
 ***
 ### Paper : Saliency-Guided Unsupervised Feature Learning for Scene Classification(2015)
 ### 19th, July
-### 1. FCN
-#### Semantic Segmentation
+### 1. Traditional Scene Classification
+#### K-means Clustering
+
+
+
+#### Bag of Words
+
+
+#### Sparse Coding
+
 
 
 ***
 ### Paper : Saliency-Guided Unsupervised Feature Learning for Scene Classification(2015)
 ### 20th, July
-### 1. FCN
-#### Semantic Segmentation
+### 1. Saliency
+#### Definition
+
+
+
+#### Saliency Detection
+
+
+
 
 
 ***
-### Seminar Day : Saliency-Guided Unsupervised Feature Learning for Scene Classification
-### 23rd, July
-### 1. FCN
-#### Semantic Segmentation
+### Paper : Saliency-Guided Unsupervised Feature Learning for Scene Classification(2015)
+### 17th, July
+### 1. Unsupervised Feature Learning
+#### Sparse Autoencoder
+
+
+#### KL-Divergence
 
 
 ***
+### Paper : Saliency-Guided Unsupervised Feature Learning for Scene Classification(2015)
+### 18th, July
+### 1. Scene Classification
+#### SVM
+
+
+
+#### Scene Classification via SVM
+
+
+***
+
 ### Paper : Object Recognition from Local Scale-Invariant Features(1999)
 ### 24th, July
-### 1. FCN
-#### Semantic Segmentation
+### 1. SIFT
+#### Descriptor
+
+
+#### Gaussian Blurring
+
+
+#### Difference of Gaussian
+
 
 
 ***
 ### Paper : Object Recognition from Local Scale-Invariant Features(1999)
 ### 25th, July
-### 1. FCN
-#### Semantic Segmentation
+### 1. SIFT
+#### Key Point Candidate
+
+
+#### Assigning Orientation
+
 
 
 ***
 ### Paper : Object Recognition from Local Scale-Invariant Features(1999)
 ### 26th, July
-### 1. FCN
-#### Semantic Segmentation
+### 1. SIFT
+#### Matching Keys
 
 
-***
-### Paper : Object Recognition from Local Scale-Invariant Features(1999)
-### 27th, July
-### 1. FCN
-#### Semantic Segmentation
+
+#### Euclidean Distance
 
 
 ***
 
 ### Paper : ImageNet Classification with Deep Convolutional Neural Networks(2012)
 ### 31st, July
-### 1. FCN
-#### Semantic Segmentation
+### 1. Reviews of CNN
+#### Convolution
+
+
+#### Padding
+
+
+#### Stride
 
 
 ***
 ### Paper : ImageNet Classification with Deep Convolutional Neural Networks(2012)
 ### 1st, August
-### 1. FCN
-#### Semantic Segmentation
+### 1. Reviews of Classifiers
+#### Fully Connected Layer
+
+
+
+#### Stochastic Gradient Descent Method
+
+
+
+
+#### Dropout
+
+
+
+#### Data Augmentation
+
 
 
 ***
 ### Paper : ImageNet Classification with Deep Convolutional Neural Networks(2012)
 ### 2nd, August
-### 1. FCN
-#### Semantic Segmentation
+### 1. AlexNet Implementation
+#### Based on paper
 
 
-***
-### Paper : ImageNet Classification with Deep Convolutional Neural Networks(2012)
-### 3rd, August
-### 1. FCN
-#### Semantic Segmentation
+#### Tuning for MNIST dataset
+
 
 
 ***
+
 
