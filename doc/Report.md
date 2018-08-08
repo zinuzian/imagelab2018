@@ -1076,7 +1076,7 @@ If the output is downsampled by a factor of f, shift the input x pixels to the r
 
 ![ex_screenshot](./img/sas_eq.PNG)
 
-![ex_screenshot](./img/shif_and_stitch.png)
+![ex_screenshot](./img/shift_and_stitch.png)
 
 However, authors didn't used this technique and decided to use upsampling instead because of its efficency. 
 
@@ -1099,25 +1099,20 @@ If we keep adding skip and intermediate results, we can find out that image beco
 ***
 ### Paper : Fully Convolutional Networks for Semantic Segmentation (2017)
 ### 29th, June
-### 1. FCN Traning
-#### 
+### 1. Segmentation
+#### Combining all channels
+
+As we can see the result of tabby cat heatmap, the segmentation results at the feature map level are too coarse. Therefore, we must make this coarse heatmap dense (with the original image size). In this paper, authors use upsampling (backwards strided convolution). Then you can get dense segmentation results for each class. That is, if the width of the original image is W and the height is H, you can get the dense heatmap result of 21xHxW.
+
+But we are not trying to estimate the results of each class eventually. We should get segmented results for all classes in one image. So, we use **softmax** to gather only the highest probability class of each upsampling heatmap obtained in the above step, and make one segmentation image. 
+
+With skip architecture we studied yesterday, we can understand how results of FCN-32s, FCN-16s, and FCN-8s is generated. And these are the result chart of FCN.
+
+![ex_screenshot](./img/fcn_res3.PNG)
 
 
 ***
-### Paper : Fully Convolutional Networks for Semantic Segmentation (2017)
-### 2nd, July
-### 1. FCN
-#### Semantic Segmentation
 
-
-***
-### Seminar Day : Fully Convolutional Networks for Semantic Segmentation 
-### 3rd, July
-### 1. FCN
-#### Semantic Segmentation
-
-
-***
 ### Paper : Dynamic Routing Between Capsules (2017)
 ### 4th, July
 ### 1. FCN
@@ -1183,13 +1178,7 @@ If we keep adding skip and intermediate results, we can find out that image beco
 
 
 ***
-### Seminar Day : Decaying LR vs Batch Normalization
-### 16th, July
-### 1. FCN
-#### Semantic Segmentation
 
-
-***
 ### Paper : Saliency-Guided Unsupervised Feature Learning for Scene Classification(2015)
 ### 17th, July
 ### 1. FCN
@@ -1253,13 +1242,7 @@ If we keep adding skip and intermediate results, we can find out that image beco
 
 
 ***
-### Seminar Day : Object Recognition from Local Scale-Invariant Features + Kullback Leibler Divergence
-### 30th, July
-### 1. FCN
-#### Semantic Segmentation
 
-
-***
 ### Paper : ImageNet Classification with Deep Convolutional Neural Networks(2012)
 ### 31st, July
 ### 1. FCN
@@ -1288,10 +1271,4 @@ If we keep adding skip and intermediate results, we can find out that image beco
 
 
 ***
-### Seminar Day : ImageNet Classification with Deep Convolutional Neural Networks
-### 6th, August
-### 1. FCN
-#### Semantic Segmentation
 
-
-***
