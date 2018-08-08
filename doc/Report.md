@@ -1115,21 +1115,56 @@ With skip architecture we studied yesterday, we can understand how results of FC
 
 ### Paper : Dynamic Routing Between Capsules (2017)
 ### 4th, July
-### 1. FCN
-#### Semantic Segmentation
+### 1. What is Capsule Network?
+#### Typical CNN
+
+This is a common CNN network structure we can see. 
+
+![ex_screenshot](./img/tycnn.PNG)
+
+Through this structure, image classification, detection and many other areas have done good performance. Since mapping out each image pixel is very inefficient in terms of computational complexity, CNN uses multiple convolution filters and uses pooling (subsampling in the figure above) as well. 
+
+Here is a summary of the concept of pooling.
+
+* Creates "summaries" of each sub-region
+* Give a little bit of positional and translational invariance
+* Via a classifier like softmax: classification
+
+In other words, summarizing each sub-region and providing invariance with respect to location information is a key concept of pooling. But there is a problem with these CNNs.
+
+CNN decides which convolution filters are important to image pixels. At first, it catches simple features (simple features - edges, colors, ...) but gets more and more complex features as you go higher and higher. 
+
+The top layer is located at the topmost layer. However, the higher layer is simply the weighted sum of the lower layers. This weighted sum does not take into account the positional relationship between simple and complex features.
+
+
+With pooling, you can see that networks has a wider field of view and some spatial information. Though this performance has surpassed humans, it still misses important information.
+
+The most active feature detector location information is still being thrown away.
+
+The figure below shows the same face, but the position of the eyes and nose is different. In the case of CNN, both are recognized as faces.
+
+![ex_screenshot](./img/cnnerr1.PNG)
+![ex_screenshot](./img/cnnerr2.PNG)
+
+#### Equivariance
+
+Yann LeCun, also the first generation of deep-running, has argued that max pooling has the advantage of preserving invariance. Hinton argues, however, that max pooling in the lecture is wrong and requires **equivariance** rather than **invariance.**
+
+Equivariance ensures that CNN understands the rotation or rate change and adapts accordingly so that the spatial location within the image is not lost. The ship is still a small ship, but CNN reduces it to detect it. This leads to the recent development of the Capsule Network.
+
 
 
 ***
 ### Paper : Dynamic Routing Between Capsules (2017)
 ### 5th, July
-### 1. FCN
+### 1. What is Capsule Network?
 #### Semantic Segmentation
 
 
 ***
 ### Paper : Dynamic Routing Between Capsules (2017)
 ### 6th, July
-### 1. FCN
+### 1. What is Capsule Network?
 #### Semantic Segmentation
 
 
@@ -1137,7 +1172,7 @@ With skip architecture we studied yesterday, we can understand how results of FC
 
 ### Seminar Day : Capsule Network and Dynamic Routing
 ### 9th, July
-### 1. FCN
+### 1. What is Capsule Network?
 #### Semantic Segmentation
 
 
