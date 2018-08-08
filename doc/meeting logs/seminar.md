@@ -114,7 +114,10 @@ pb파일만 만들면 안드로이드에 올려서 포워딩 해서 결과 확�
 ### Seminar Day : Object Recognition from Local Scale-Invariant Features + Kullback Leibler Divergence
 ### 30th, July
 ### Content
-####
+#### Feedback
+* 딥러닝 이전의 영상처리 기법들에 대해서 공부해야함
+* 현재 많이 쓰이는 기법 중 하나로, 계산량이 많지만 그만큼 성능이 매우 뛰어남
+* KL - divergence에 대해 다시 공부할 것
 
 
 ***
