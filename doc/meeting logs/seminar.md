@@ -22,7 +22,29 @@
 
 ### Seminar Day : Decaying LR vs Batch Normalization
 ### 16th, July
+### Content
+####
 
+
+***
+### Seminar Day : Saliency-Guided Unsupervised Feature Learning for Scene Classification
+### 23th, July
+### Content
+####
+
+
+***
+### Seminar Day : Object Recognition from Local Scale-Invariant Features + Kullback Leibler Divergence
+### 30th, July
+### Content
+####
+
+
+***
+### Seminar Day : ImageNet Classification with Deep Convolutional Neural Networks
+### 6th, August
+### Content
+####
 
 
 ***
