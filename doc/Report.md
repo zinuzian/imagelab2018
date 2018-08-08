@@ -1076,7 +1076,7 @@ If the output is downsampled by a factor of f, shift the input x pixels to the r
 
 ![ex_screenshot](./img/sas_eq.PNG)
 
-![ex_screenshot](./img/shift_and_stitch.png)
+![ex_screenshot](./img/shift_n_stitch.png)
 
 However, authors didn't used this technique and decided to use upsampling instead because of its efficency. 
 
