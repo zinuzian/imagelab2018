@@ -1120,7 +1120,7 @@ With skip architecture we studied yesterday, we can understand how results of FC
 
 This is a common CNN network structure we can see. 
 
-![ex_screenshot](./img/tycnn.PNG)
+![ex_screenshot](./img/tycnn.png)
 
 Through this structure, image classification, detection and many other areas have done good performance. Since mapping out each image pixel is very inefficient in terms of computational complexity, CNN uses multiple convolution filters and uses pooling (subsampling in the figure above) as well. 
 
@@ -1143,8 +1143,8 @@ The most active feature detector location information is still being thrown away
 
 The figure below shows the same face, but the position of the eyes and nose is different. In the case of CNN, both are recognized as faces.
 
-![ex_screenshot](./img/cnnerr1.PNG)
-![ex_screenshot](./img/cnnerr2.PNG)
+![ex_screenshot](./img/cnnerr1.png)
+![ex_screenshot](./img/cnnerr2.png)
 
 #### Equivariance
 
