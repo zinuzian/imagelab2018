@@ -1214,7 +1214,22 @@ Each row shows the reconstruction when one of the 16 dimensions in the DigitCaps
 ### Paper : Don‘t Decay the Learning Rate, Increase the Batch Size (2017)
 ### 10th, July
 ### 1. Decaying Learning Rate
-#### Semantic Segmentation
+#### Annealing
+It is always helpful to anneal the training speed over time in deep neural network training. It is helpful to remember this intuition: * At higher learning rates, the entire system has too high kinetic energy, so that the parameter vector bursts chaotic and is hard to fit into the narrow valley of the loss function.
+
+Then, when should the learning rate be reduced? 
+
+First of all, slowly reduce as learing progresses. Then, for a long time, loss will almost go back and forth chaotic in place. However, if you reduce it too quickly, the entire system will cool too quickly and you may not reach the optimal place to go. There are usually three ways to reduce learning speed:
+
+* step decay
+* exponential decay
+  * The author used 2-step decay that reduces slowly in the first time.
+  ![ex_screenshot](./img/lr_decay.PNG)
+* 1/t decay
+
+
+![ex_screenshot](./img/decays.PNG)
+
 
 
 ***
@@ -1223,8 +1238,25 @@ Each row shows the reconstruction when one of the 16 dimensions in the DigitCaps
 ### Paper : Don‘t Decay the Learning Rate, Increase the Batch Size (2017)
 ### 11th, July
 ### 1. Decaying Learning Rate
-#### Semantic Segmentation
+#### Various methods
+In this paper, they show various decaying methods to show that hyperbolic tangent can show a better performance than other methods.
+But we can see that they are all looks like a cosine or tangent-hyperbolic shape. 
 
+![ex_screenshot](./img/thd.PNG)
+
+This is the function of hyperbolic tangent decay function. 
+
+![ex_screenshot](./img/decay_tanh.PNG)
+
+R and U is a parameter that decides the shape of lr function. Anyway they look very similar to 2-step exponential decay.
+
+#### Result
+
+The error rates(%) of CIFAR-10 and CIFAR-100. Best results are written in blue. The character * indicates results are directly obtained from the original paper.
+
+![ex_screenshot](./img/dec_res.PNG)
+
+As you can see, tangent-hyperbolic methods shows the best performance.
 
 ***
 ### Paper : Stochastic Gradient Descent with Hyperbolic-Tangent Decay (arXiv, 2018)
@@ -1232,7 +1264,26 @@ Each row shows the reconstruction when one of the 16 dimensions in the DigitCaps
 ### Paper : Don‘t Decay the Learning Rate, Increase the Batch Size (2017)
 ### 12th, July
 ### 1. Batch Normalization
-#### Semantic Segmentation
+#### What is Batch Normalization?
+
+![ex_screenshot](./img/BN.PNG)
+
+Batch Normalization is one of the ideas to prevent Gradient Vanishing / Gradient Exploding from occurring basically. So far, we have solved this problem by changing Activation function (ReLU), careful initialization, and small learning rate. Unlike the way we used, in this paper, authors wanted to find a fundamental method to accelerate learning speed by stabilzing the training process.
+
+They argue that the reason for this destabilization is 'Internal Covariance Shift'. The phenomenon called Internal Covariance Shift means that the distribution of input varies with each layer of network or activation. To prevent this phenomenon, we can think of a simple way to normalize the input distribution of each layer to an input of 0 and 1 standard deviation, which can be solved by whitening. Whitening basically makes the features of the incoming input uncorrelated and makes each variance 1.
+
+![ex_screenshot](./img/ics.PNG)
+
+The problem is that whitening requires computation of the covariance matrix and calculation of the inverse, which is computationally expensive, and whitening make things even worse that it ignores the influence of some parameters. For example, suppose you take an input u and output x = u + b and subtract E [x] from x in a network where you want to learn the proper bias b. In such a case, the value of b is reduced in the process of subtracting E [x], and the effect of b in the output eventually disappears. This tendency will worsen if the scaling process, such as simply dividing by E [x], but dividing by standard deviation, will become worse, and the paper confirms this experimentally.
+
+#### Approach
+* Assuming that each feature is already uncorrelated, normalize only the feature and variance in scalar form for each feature.
+* Simply fixing the mean and variance at 0 and 1 can eliminate the nonlinearity of the activation function. For example, if the input to sigmoid activation is 0, and the variance is 1, the output will be more linear than the curve. Also, the assumption that a feature is uncorrelated may restrict what the network can represent. To compensate these points, add the scale factors (gamma) and shift factor (beta) to the normalized values and train them back-prop together.
+* Instead of calculating the mean and variance for the training data as a whole, it is calculated by approaching the mini-batch unit. Find the mean and variance only within the current mini-batch, and normalize using this value.
+
+![ex_screenshot](./img/bn1.PNG)
+
+In practice, when applying this batch normalization to a network, add a Batch Normalization Layer before entering a certain hidden layer, modify the input, and use the new value as an activation function.
 
 
 ***
@@ -1241,7 +1292,107 @@ Each row shows the reconstruction when one of the 16 dimensions in the DigitCaps
 ### Paper : Don‘t Decay the Learning Rate, Increase the Batch Size (2017)
 ### 13th, July
 ### 1. Batch Normalization
-#### Semantic Segmentation
+#### Implementation
+
+The pseudo-code of the overall Batch Normalization layer is as follows. The important thing is to normalize to the average and variance of mini-batch during training, and normalize to the calculated moving average when testing. After normalizing, create a new value using the scale factor and the shift factor, and print the new value. This scale factor and shift factor can be learned in the back-prop as if you are learning the weight from another layer. "
+
+![ex_screenshot](./img/bn2.PNG)
+
+However, the explanation so far is only applicable to 'when it is a general network'. If you want to apply Batch Normalization to CNN, you have to use a slightly different method than the one described so far. First, in the convolution layer, we apply weight in the form of Wx + b before putting the value in the usual activation function. If we want to use batch normalization, we eliminate b because beta value can substitute role of b when normalizing. 
+
+Also, since we want to maintain the properties of convolution in CNN, we make each batch normalization variable based on each channel. For example, suppose you apply Batch Normalization to a Convolution Layer with a mini-batch-size of m and a channel size of n. If the size of the feature map after applying the convolution is p x q, then find the mean and variance for each scalar value of m x p x q for each channel. Finally, gamma and beta will have a total of n independent batch normalization variables, one for each channel.
+
+The code below is implementation of batch normalization found on github : 
+
+https://github.com/shuuki4/Batch-Normalization/blob/master/BatchNormalization.py
+
+```python
+import theano
+import theano.tensor as T
+import numpy as np
+import math
+import time
+
+class BatchNormalization(object) :
+	def __init__(self, input_shape, mode=0 , momentum=0.9) :
+		'''
+		# params :
+		input_shape :
+			when mode is 0, we assume 2D input. (mini_batch_size, # features)
+			when mode is 1, we assume 4D input. (mini_batch_size, # of channel, # row, # column)
+		mode : 
+			0 : feature-wise mode (normal BN)
+			1 : window-wise mode (CNN mode BN)
+		momentum : momentum for exponential average
+		'''
+		self.input_shape = input_shape
+		self.mode = mode
+		self.momentum = momentum
+		self.run_mode = 0 # run_mode : 0 means training, 1 means inference
+
+		self.insize = input_shape[1]
+		
+		# random setting of gamma and beta, setting initial mean and std
+		rng = np.random.RandomState(int(time.time()))
+		self.gamma = theano.shared(np.asarray(rng.uniform(low=-1.0/math.sqrt(self.insize), high=1.0/math.sqrt(self.insize), size=(input_shape[1])), dtype=theano.config.floatX), name='gamma', borrow=True)
+		self.beta = theano.shared(np.zeros((input_shape[1]), dtype=theano.config.floatX), name='beta', borrow=True)
+		self.mean = theano.shared(np.zeros((input_shape[1]), dtype=theano.config.floatX), name='mean', borrow=True)
+		self.var = theano.shared(np.ones((input_shape[1]), dtype=theano.config.floatX), name='var', borrow=True)
+
+		# parameter save for update
+		self.params = [self.gamma, self.beta]
+
+	def set_runmode(self, run_mode) :
+		self.run_mode = run_mode
+
+	def get_result(self, input) :
+		# returns BN result for given input.
+		epsilon = 1e-06
+
+		if self.mode==0 :
+			if self.run_mode==0 :
+				now_mean = T.mean(input, axis=0)
+				now_var = T.var(input, axis=0)
+				now_normalize = (input - now_mean) / T.sqrt(now_var+epsilon) # should be broadcastable..
+				output = self.gamma * now_normalize + self.beta
+				# mean, var update
+				self.mean = self.momentum * self.mean + (1.0-self.momentum) * now_mean
+				self.var = self.momentum * self.var + (1.0-self.momentum) * (self.input_shape[0]/(self.input_shape[0]-1)*now_var)
+			else : 
+				output = self.gamma * (input - self.mean) / T.sqrt(self.var+epsilon) + self.beta
+
+		else : 
+			# in CNN mode, gamma and beta exists for every single channel separately.
+			# for each channel, calculate mean and std for (mini_batch_size * row * column) elements.
+			# then, each channel has own scalar gamma/beta parameters.
+			if self.run_mode==0 :
+				now_mean = T.mean(input, axis=(0,2,3))
+				now_var = T.var(input, axis=(0,2,3))
+				# mean, var update
+				self.mean = self.momentum * self.mean + (1.0-self.momentum) * now_mean
+				self.var = self.momentum * self.var + (1.0-self.momentum) * (self.input_shape[0]/(self.input_shape[0]-1)*now_var)
+			else :
+				now_mean = self.mean
+				now_var = self.var
+			# change shape to fit input shape
+			now_mean = self.change_shape(now_mean)
+			now_var = self.change_shape(now_var)
+			now_gamma = self.change_shape(self.gamma)
+			now_beta = self.change_shape(self.beta)
+			
+			output = now_gamma * (input - now_mean) / T.sqrt(now_var+epsilon) + now_beta
+			
+		return output
+
+	# changing shape for CNN mode
+	def change_shape(self, vec) :
+		return T.repeat(vec, self.input_shape[2]*self.input_shape[3]).reshape((self.input_shape[1],self.input_shape[2],self.input_shape[3]))
+
+```
+
+We can see that training procedure is much more stabilized than un-normalized way. 
+
+![ex_screenshot](./img/bn_effect.PNG)
 
 
 ***
@@ -1249,38 +1400,52 @@ Each row shows the reconstruction when one of the 16 dimensions in the DigitCaps
 ### 19th, July
 ### 1. Traditional Scene Classification
 #### K-means Clustering
-
-
+K-means Clustering is one of the representative distributed clustering algorithms. Each cluster has one centroid. Each object is assigned to the nearest center, and the objects assigned to the same center are gathered together to form a cluster. The user should set the number of clusters in advance (k) to run the algorithm.
 
 #### Bag of Words
+The Bag of Words technique is one of the methods for automatically classifying a document. It refers to a technique of determining the kind of document that a document is based on the distribution of words contained in the document. For example, if a document contains many words such as 'exchange rate', 'stock price', 'interest rate', etc., this document will be categorized as documents related to economics and the words 'backlighting', 'exposure' If so, it is a way to classify it as a document about photography.
 
+![ex_screenshot](./img/bow.PNG)
 
 #### Sparse Coding
+(F) associated with quality in the 100 distorted images in the database. Suppose you have derived 20 units. That is, 20 features are derived for each image. A matrix is constructed by arranging the characteristics of one image in a row by row vector (20 x 1), and the size of the matrix is 20 x 100. This is called a dictionary. Each column vector in a dictionary is called an atom. In this case, there are 100 atoms in the dictionary.
 
-
+![ex_screenshot](./img/sc.PNG)
+![ex_screenshot](./img/sc2.PNG)
 
 ***
 ### Paper : Saliency-Guided Unsupervised Feature Learning for Scene Classification(2015)
 ### 20th, July
 ### 1. Saliency
 #### Definition
-
+The salience (also called saliency) of an item – be it an object, a person, a pixel, etc. – is the state or quality by which it stands out from its neighbors. Saliency detection is considered to be a key attentional mechanism that facilitates learning and survival by enabling organisms to focus their limited perceptual and cognitive resources on the most pertinent subset of the available sensory data. - https://en.wikipedia.org/wiki/Salience_(neuroscience)
 
 
 #### Saliency Detection
 
+In this paper, we try to extract feature points with two assumptions.
+* stationary property - statistics of one part of the image are the same as any other part.
+* a region of interest is generally salient in an image
 
+Based on this assumption, dissimilarity is estimated based on the color and Euclidean distance between each pixel.
+![ex_screenshot](./img/dissim.PNG)
 
-
+Based on dissimilarity, we define saliency as the following equation and calculate the saliency value for each pixel.
+![ex_screenshot](./img/saliency.PNG)
+![ex_screenshot](./img/sd.PNG)
 
 ***
 ### Paper : Saliency-Guided Unsupervised Feature Learning for Scene Classification(2015)
 ### 17th, July
 ### 1. Unsupervised Feature Learning
 #### Sparse Autoencoder
-
+The autoencoder that the feature is represented as a sparse representation in hidden layer, which is differed from traditional autoencoder. The sparse autoencoder learns sparsified representation to classify images. 
+![ex_screenshot](./img/sae.PNG)
 
 #### KL-Divergence
+We use Kullback-Leibler Divergence to measure information lost. This comes from entropy equation. We want to use an approximate distribution q rather than a probability distribution p. And the difference is to calculate log value as follows.
+![ex_screenshot](./img/KL.PNG)
+
 
 
 ***
@@ -1289,9 +1454,10 @@ Each row shows the reconstruction when one of the 16 dimensions in the DigitCaps
 ### 1. Scene Classification
 #### SVM
 
+The Support Vector Machine (SVM) transforms the original training (or training) data into a higher order through nonlinear mapping. In this new dimension, we look for a linear separation that optimally separates the hyperplane. That is, we find the optimal Decision Boundary.
 
-
-#### Scene Classification via SVM
+So why send data to higher dimensions? For example, A = [a, d] and B = [b, c] are non-linearly separable in two dimensions as shown in Figure 1 below. This leads to a linearly separable map when mapping to a three dimensional dimension. Thus, with appropriate nonlinear mapping to a sufficiently large dimension, data with two classes can always be separated in the hyperplane.
+![ex_screenshot](./img/KL.PNG)
 
 
 ***
@@ -1300,83 +1466,374 @@ Each row shows the reconstruction when one of the 16 dimensions in the DigitCaps
 ### 24th, July
 ### 1. SIFT
 #### Descriptor
+The descriptor function refers to making a feature in a photograph as a comparison object through the same method for comparing parts of a specific area in a photograph with each other.  descriptor function should be designed to simply compare regions, but it may be a  complex one.
 
+Robust feature extraction should be possible even when there is illumination or distortion when the photo is rotated or mixed with noise.
+
+![ex_screenshot](./img/desc.PNG)
 
 #### Gaussian Blurring
 
+In the image processing, a Gaussian filter means that a mask is generated by using the two-dimensional Gaussian function value, and an input image and a mask operation are performed. The original Gaussian function is a continuous function, but a mask is generated by extracting the Gaussian function value only where x and y are integers, in order to create a discrete mask. Since the Gaussian function with the mean of 0 and the standard deviation of σ exists at most -4σ ≤ x, y ≤ 4, the size of the Gaussian filter mask can be determined as (8σ + 1).
+
+![ex_screenshot](./img/gf.PNG)
 
 #### Difference of Gaussian
 
+The LoG operation makes the edges and corners in the image stand out. These edges and corners help you find keypoints. However, because LoG requires a lot of computation, it replaces the Difference of Gaussian (DoG), which is comparatively simple and achieves similar performance. LoG and DoG are widely used methods for deriving edge information and corner information from images. DoG is very simple. You can subtract two adjacent blur images within the same octave from the previous step. Figure 5 illustrates the process.
 
+![ex_screenshot](./img/dog.PNG)
+
+
+https://gist.github.com/leonidk/8798fdbf38db120b8536d25ea2f8c3b4
+
+```python
+from skimage import data, feature, color, filter, img_as_float
+from matplotlib import pyplot as plt
+
+
+original_image = img_as_float(data.chelsea())
+img = color.rgb2gray(original_image)
+
+k = 1.6
+
+plt.subplot(2,3,1)
+plt.imshow(original_image)
+plt.title('Original Image')
+
+for idx,sigma in enumerate([4.0,8.0,16.0,32.0]):
+	s1 = filter.gaussian_filter(img,k*sigma)
+	s2 = filter.gaussian_filter(img,sigma)
+
+	# multiply by sigma to get scale invariance
+	dog = s1 - s2
+	plt.subplot(2,3,idx+2)
+	print dog.min(),dog.max()
+	plt.imshow(dog,cmap='RdBu')
+	plt.title('DoG with sigma=' + str(sigma) + ', k=' + str(k))
+
+ax = plt.subplot(2,3,6)
+blobs_dog = [(x[0],x[1],x[2]) for x in feature.blob_dog(img, min_sigma=4, max_sigma=32,threshold=0.5,overlap=1.0)]
+# skimage has a bug in my version where only maxima were returned by the above
+blobs_dog += [(x[0],x[1],x[2]) for x in feature.blob_dog(-img, min_sigma=4, max_sigma=32,threshold=0.5,overlap=1.0)]
+
+#remove duplicates
+blobs_dog = set(blobs_dog)
+
+img_blobs = color.gray2rgb(img)
+for blob in blobs_dog:
+	y, x, r = blob
+	c = plt.Circle((x, y), r, color='red', linewidth=2, fill=False)
+	ax.add_patch(c)
+plt.imshow(img_blobs)
+plt.title('Detected DoG Maxima')
+
+plt.show()
+
+```
 
 ***
 ### Paper : Object Recognition from Local Scale-Invariant Features(1999)
 ### 25th, July
 ### 1. SIFT
 #### Key Point Candidate
-
+When determining the maximum and minimum values for a pixel, you need three DoG images within the same octave. One for the DoG images to be checked and DoG images with scale up and down are required. Scans a total of 26 pixels, eight pixels around the pixels to be checked now, and nine pixels close to the pixel you want to check in the two top and bottom DoG images with a scale of one step at a time. If the value of the current check pixel is the smallest or largest of the 26 neighboring pixel values, it is recognized as a keypoint. Therefore, the maximum and minimum values can not be found in the top and bottom DoG images of the four DoG images. In this way, it finds the Keypoints in every pixel of the DoG image.
 
 #### Assigning Orientation
 
-
-
-***
-### Paper : Object Recognition from Local Scale-Invariant Features(1999)
-### 26th, July
-### 1. SIFT
-#### Matching Keys
-
-
-
-#### Euclidean Distance
-
-
-***
-
-### Paper : ImageNet Classification with Deep Convolutional Neural Networks(2012)
-### 31st, July
-### 1. Reviews of CNN
-#### Convolution
-
-
-#### Padding
-
-
-#### Stride
+In the previous steps we found the right keypoints. These keypoints satisfy scale invariance. Now we want to have a rotation invariance by assigning directions to the keypoints. The method is to gather the direction and size of the gradient around each keypoint. Then find the most prominent direction and assign it in the direction of the keypoint.
+![ex_screenshot](./img/sift_ori.PNG)
+![ex_screenshot](./img/sift_ori2.PNG)
 
 
 ***
 ### Paper : ImageNet Classification with Deep Convolutional Neural Networks(2012)
 ### 1st, August
-### 1. Reviews of Classifiers
-#### Fully Connected Layer
+### 1. AlexNet
+#### AlexNet Architecture
+AlexNet has 3 fully-connected layers. After the convolution, features are represented as 256 * 13 * 13 lists. And these features finally become 1000 * 1 * 1 list that shows the probability for each 1000 classes in ImageNet challenge. Softmax function is used to make it clear that which class is most likely to be.
 
+![ex_screenshot](./img/alexnet_.PNG)
 
 
 #### Stochastic Gradient Descent Method
+Gradient Descent is basically an algorithm that you can go to with good results if you lower the slope. Of these, Stochasitc Graidient Descent calculates one at a time. That is, you update once for one data, update once for another, and so on. In this case, we will randomly select which data to write each time. So it became the official name of SGD with the name stochastic.
+
+![ex_screenshot](./img/SGD_color.PNG)
 
 
+#### Momentum
+The disadvantage of the Grdient Descent algorithm is that it is too slow to train, besides not being able to escape the slope zero point. The common way to solve this is to apply momentum. Inertia is the direction in which the slope is going, and it is only slightly moved in the direction. The acceleration that comes down can reach the minimum value more quickly, and the inflection point can go quite well because of the acceleration.
+
+![equation](https://latex.codecogs.com/gif.latex?v'&space;=&space;\gamma&space;v&space;-&space;\epsilon\frac{\partial}{\partial&space;x}f(x)&space;\\&space;x'&space;=&space;x&space;&plus;&space;v')
+
+epsilon is the rate constant and gamma is the momentum rate. The inertial constant usually starts at 0.5 and increases to 0.9 when the declining trend stabilizes to some extent.
+
+![ex_screenshot](./img/momentum.GIF)
 
 
 #### Dropout
 
+Instead of participating in the calculation of the total weight, only part of the weight included in the layer is involved. It does not seem to work at all, but it does very well.
+
+Dropout is used in this network, specially in fully connected layers **to prevent overfitting**.
 
 
 #### Data Augmentation
 
-
+Data augmentation is another way of preventing overfitting. But this leads to an increase of training time, which decreses efficiency. In this paper, authors find out that if we use CPU to augment data, while GPU is learning, we can get augemented data free in computation perspective. 
 
 ***
 ### Paper : ImageNet Classification with Deep Convolutional Neural Networks(2012)
 ### 2nd, August
 ### 1. AlexNet Implementation
 #### Based on paper
+```python
+import os
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
+from torch.autograd import Variable
+import torchvision
+from torch.utils.data import DataLoader,Dataset
+import PIL.Image as Image
+import matplotlib.pyplot as plt
+import torchvision.transforms as transforms
+import torch.utils.model_zoo as model_zoo
 
+
+__all__ = ['AlexNet', 'alexnet']
+
+
+model_urls = {
+    'alexnet': 'https://download.pytorch.org/models/alexnet-owt-4df8aa71.pth',
+}
+
+
+class AlexNet(nn.Module):
+
+    def __init__(self, num_classes=10):
+        super(AlexNet, self).__init__()
+        self.features = nn.Sequential(
+            nn.Conv2d(3, 96, kernel_size=11, stride=3, ),
+            nn.ReLU(inplace=True),
+            #nn.LocalResponseNorm(2),
+            nn.MaxPool2d(kernel_size=3, stride=2),
+
+            nn.Conv2d(96, 256, kernel_size=5, groups=2, padding=2),
+            nn.ReLU(inplace=True),
+            #nn.LocalResponseNorm(2),
+            nn.MaxPool2d(kernel_size=3, stride=2),
+
+            nn.Conv2d(256, 384, kernel_size=3),
+            nn.ReLU(inplace=True),
+
+            nn.Conv2d(384, 256, kernel_size=3, groups=2, padding=1),
+            nn.ReLU(inplace=True),
+
+            nn.Conv2d(256, 256, kernel_size=3, groups=2, padding=1),
+            nn.ReLU(inplace=True),
+            nn.MaxPool2d(kernel_size=3, stride=2),
+        )
+        self.classifier = nn.Sequential(
+            nn.Dropout(),
+            nn.Linear(256 * 6 * 6, 4096),
+            nn.ReLU(inplace=True),
+            nn.Dropout(),
+            nn.Linear(4096, 4096),
+            nn.ReLU(inplace=True),
+            nn.Linear(4096, num_classes),
+
+        )
+
+    def forward(self, x):
+        x = self.features(x)
+        x = x.view(x.size(0), -1)
+        x = self.classifier(x)
+        return x
+
+
+def alexnet(pretrained=False, **kwargs):
+    r"""AlexNet model architecture from the
+    `"One weird trick..." <https://arxiv.org/abs/1404.5997>`_ paper.
+    Args:
+        pretrained (bool): If True, returns a model pre-trained on ImageNet
+    """
+    model = AlexNet(**kwargs)
+    if pretrained:
+        model.load_state_dict(model_zoo.load_url(model_urls['alexnet']))
+    return model
+
+num_epoch = 100
+batch_size = 128
+lr = 0.0002
+model = alexnet(False)
+model = torch.nn.DataParallel(model).cuda()
+
+loss_func = nn.CrossEntropyLoss()
+optimizer = torch.optim.SGD(model.parameters(),lr=lr,momentum=0.9)
+
+
+transform = transforms.Compose([transforms.ToTensor(),transforms.Normalize((0.5,0.5,0.5),(0.5,0.5,0.5))])
+train_set = torchvision.datasets.CIFAR10(root='./train_data',train=True,download=True,transform=transform)
+train_loader = DataLoader(train_set,batch_size=8,shuffle=False,num_workers=2)
+test_set = torchvision.datasets.CIFAR10(root='./test_data',train=False,download=True,transform=transform)
+test_loader = DataLoader(test_set,batch_size=8,shuffle=False,num_workers=2)
+
+
+#Training Section
+for i in range(num_epoch):
+    for j,[image,label] in enumerate(train_loader):
+        x=Variable(image).cuda()
+        y_=Variable(label).cuda()
+
+        optimizer.zero_grad()
+        output=model.forward(x)
+        loss = loss_func(output,y_)
+        loss.backward()
+        optimizer.step()
+
+        if j%1000 == 0:
+            print(loss.data,i,j)
+            torch.save(model,'./alexnet_cifar10_model.pkl')
+
+
+# Test Section
+correct = 0
+total = 0
+
+for image, label in test_loader:
+    x = Variable(image, volatile=True).cuda()
+    y_ = Variable(label).cuda()
+
+    output = model.forward(x)
+    _, output_index = torch.max(output, 1)
+
+    total += label.size(0)
+    correct += (output_index == y_).sum().float()
+
+print("Accuracy of Test Data: {}".format(100 * correct / total))
+
+
+```
 
 #### Tuning for MNIST dataset
+```python
+import os
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
+from torch.autograd import Variable
+import torchvision
+from torch.utils.data import DataLoader,Dataset
+import PIL.Image as Image
+import matplotlib.pyplot as plt
+import torchvision.transforms as transforms
+import torch.utils.model_zoo as model_zoo
 
+
+__all__ = ['AlexNet', 'alexnet']
+
+
+model_urls = {
+    'alexnet': 'https://download.pytorch.org/models/alexnet-owt-4df8aa71.pth',
+}
+
+
+class AlexNet(nn.Module):
+
+    def __init__(self, num_classes=10):
+        super(AlexNet, self).__init__()
+        self.features = nn.Sequential(
+            nn.Conv2d(3, 64, kernel_size=11, stride=4, padding=5),
+            nn.ReLU(inplace=True),
+            nn.MaxPool2d(kernel_size=2, stride=2),
+            nn.Conv2d(64, 192, kernel_size=5, padding=2, groups=2),
+            nn.ReLU(inplace=True),
+            nn.MaxPool2d(kernel_size=2, stride=2),
+            nn.Conv2d(192, 384, kernel_size=3, padding=1, groups=2),
+            nn.ReLU(inplace=True),
+            nn.Conv2d(384, 256, kernel_size=3, padding=1, groups=2),
+            nn.ReLU(inplace=True),
+            nn.Conv2d(256, 256, kernel_size=3, padding=1, groups=2),
+            nn.ReLU(inplace=True),
+            nn.MaxPool2d(kernel_size=2, stride=2),
+        )
+        self.classifier = nn.Sequential(
+            nn.Linear(256, num_classes)
+        )
+
+    def forward(self, x):
+        x = self.features(x)
+        x = x.view(x.size(0), -1)
+        x = self.classifier(x)
+        return x
+
+
+def alexnet(pretrained=False, **kwargs):
+    r"""AlexNet model architecture from the
+    `"One weird trick..." <https://arxiv.org/abs/1404.5997>`_ paper.
+    Args:
+        pretrained (bool): If True, returns a model pre-trained on ImageNet
+    """
+    model = AlexNet(**kwargs)
+    if pretrained:
+        model.load_state_dict(model_zoo.load_url(model_urls['alexnet']))
+    return model
+
+num_epoch = 100
+batch_size = 128
+lr = 0.0002
+model = alexnet(False)
+model = torch.nn.DataParallel(model).cuda()
+
+loss_func = nn.CrossEntropyLoss()
+optimizer = torch.optim.SGD(model.parameters(),lr=lr,momentum=0.9)
+
+
+transform = transforms.Compose([transforms.ToTensor(),transforms.Normalize((0.5,0.5,0.5),(0.5,0.5,0.5))])
+train_set = torchvision.datasets.CIFAR10(root='./train_data',train=True,download=True,transform=transform)
+train_loader = DataLoader(train_set,batch_size=8,shuffle=False,num_workers=2)
+test_set = torchvision.datasets.CIFAR10(root='./test_data',train=False,download=True,transform=transform)
+test_loader = DataLoader(test_set,batch_size=8,shuffle=False,num_workers=2)
+
+
+#Training Section
+for i in range(num_epoch):
+    for j,[image,label] in enumerate(train_loader):
+        x=Variable(image).cuda()
+        y_=Variable(label).cuda()
+
+        optimizer.zero_grad()
+        output=model.forward(x)
+        loss = loss_func(output,y_)
+        loss.backward()
+        optimizer.step()
+
+        if j%1000 == 0:
+            print(loss.data,i,j)
+            torch.save(model,'./alexnet_cifar10_model.pkl')
+
+
+# Test Section
+correct = 0
+total = 0
+
+for image, label in test_loader:
+    x = Variable(image, volatile=True).cuda()
+    y_ = Variable(label).cuda()
+
+    output = model.forward(x)
+    _, output_index = torch.max(output, 1)
+
+    total += label.size(0)
+    correct += (output_index == y_).sum().float()
+
+print("Accuracy of Test Data: {}".format(100 * correct / total))
+
+
+```
 
 
 ***
-
 
