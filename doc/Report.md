@@ -1569,7 +1569,7 @@ The disadvantage of the Grdient Descent algorithm is that it is too slow to trai
 
 epsilon is the rate constant and gamma is the momentum rate. The inertial constant usually starts at 0.5 and increases to 0.9 when the declining trend stabilizes to some extent.
 
-![ex_screenshot](./img/momentum.GIF)
+![ex_screenshot](./img/momentum.gif)
 
 
 #### Dropout
