@@ -1,8 +1,8 @@
 # PE Program Report - Image Lab 2018 Summer 
-
+### Chung-Ang University, Undergraduate, Jinwoo Jeon
 ## Goals
 
-Our program is 
+This program is 
 * To understand basic knowledges of Machine Learning and Neural Network.
 * To make ability to read papers about Deep-Learning in now days.
 * To research useful algorithms related to denoising.
